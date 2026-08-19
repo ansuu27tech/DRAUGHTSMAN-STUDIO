@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap');
+
+:root {
+  /* Default Theme (Dark) */
+  --color-bg: #0a0a0a;
+  --color-surface: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-accent: #C5A059;
+  --color-accent-glow: rgba(197, 160, 89, 0.3);
+
+  /* Additional Semantic Variables for Hardcoded Colors */
+  --btn-bg-primary: #ffffff;
+  --btn-text-primary: #000000;
+  --btn-border-secondary: rgba(255, 255, 255, 0.2);
+  --card-overlay: rgba(0, 0, 0, 0.7);
+  --modal-overlay: rgba(0, 0, 0, 0.95);
+  --grid-color: rgba(255, 255, 255, 0.05);
+  --hero-overlay: rgba(0, 0, 0, 0.5);
+  --color-partner-text: #00ff96;
+  --nav-bg: rgba(20, 20, 20, 0.8);
+
+
+  --font-heading: 'Syncopate', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+  --font-script: 'Italianno', cursive;
+}
+
+[data-theme="light"] {
+  /* Day / Light Theme Palette */
+  --color-bg: #F9F8F6;
+  --color-surface: #E9E6E1;
+  --color-text-primary: #2E2E2E;
+  --color-text-secondary: #4F7085;
+  /* Secondary accent for links/underlines */
+  --color-accent: #CBA76C;
+  --color-accent-glow: rgba(203, 167, 108, 0.3);
+
+  /* Semantic Overrides */
+  --btn-bg-primary: #CBA76C;
+  --btn-text-primary: #2E2E2E;
+  --btn-border-secondary: rgba(203, 167, 108, 0.3);
+
+  --hero-overlay: rgba(255, 255, 255, 0.3);
+  /* Light Theme Overlay */
+
+  --card-overlay: rgba(233, 230, 225, 0.85);
+  --modal-overlay: rgba(249, 248, 246, 0.95);
+  --grid-color: rgba(79, 112, 133, 0.05);
+  /* Based on secondary accent */
+  --color-partner-text: #4F7085;
+  /* Using secondary accent for consistency */
+  --nav-bg: rgba(249, 248, 246, 0.8);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* Button Styles */
+.btn-primary {
+  background: var(--btn-bg-primary);
+  color: var(--btn-text-primary);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .btn-primary:hover {
+  filter: brightness(0.92);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--btn-border-secondary);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: var(--color-text-primary);
+}
