@@ -1,0 +1,1076 @@
+/* ============================================================
+   ARCHI DRAFT — Product Experience Styles
+   Premium architectural product-launch aesthetic
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   Design Tokens (scoped to .archidraft)
+   ---------------------------------------------------------- */
+.archidraft {
+  --ad-ivory: #F5F0E8;
+  --ad-ivory-warm: #EDE6D8;
+  --ad-charcoal: #1C1C1C;
+  --ad-charcoal-soft: #2A2A2A;
+  --ad-gold: #C6A969;
+  --ad-gold-light: rgba(198, 169, 105, 0.15);
+  --ad-gold-glow: rgba(198, 169, 105, 0.35);
+  --ad-text-primary: var(--color-text-primary);
+  --ad-text-secondary: var(--color-text-secondary);
+  --ad-bg: var(--color-bg);
+  --ad-surface: var(--color-surface);
+  --ad-border: var(--grid-color);
+  --ad-font-heading: 'Syncopate', sans-serif;
+  --ad-font-body: 'Montserrat', sans-serif;
+  --ad-radius: 12px;
+  --ad-radius-lg: 20px;
+  --ad-transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ----------------------------------------------------------
+   Archi Draft Navigation
+   ---------------------------------------------------------- */
+.ad-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(198, 169, 105, 0.12);
+  padding: 0 2rem;
+  transition: background var(--ad-transition, 0.35s);
+}
+
+[data-theme="light"] .ad-nav {
+  background: rgba(249, 248, 246, 0.88);
+  border-bottom-color: rgba(198, 169, 105, 0.2);
+}
+
+.ad-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.ad-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.ad-nav-brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--ad-gold, #C6A969), #D4B87A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #1C1C1C;
+  letter-spacing: 1px;
+}
+
+.ad-nav-brand-text {
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+.ad-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ad-nav-links a,
+.ad-nav-links button.ad-nav-link-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.35s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.ad-nav-links a:hover,
+.ad-nav-links button.ad-nav-link-btn:hover {
+  color: #C6A969;
+}
+
+.ad-nav-back {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #C6A969;
+  background: transparent;
+  border: 1px solid rgba(198, 169, 105, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.35s;
+  text-decoration: none;
+}
+
+.ad-nav-back:hover {
+  background: rgba(198, 169, 105, 0.15);
+  border-color: #C6A969;
+}
+
+/* Mobile nav toggle */
+.ad-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--color-text-primary);
+}
+
+.ad-nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  margin: 5px 0;
+  transition: all 0.3s;
+}
+
+/* ----------------------------------------------------------
+   Hero Section
+   ---------------------------------------------------------- */
+.ad-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 2rem 80px;
+  overflow: hidden;
+}
+
+.ad-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.ad-hero-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(198, 169, 105, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(198, 169, 105, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.ad-hero-bg-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 30%, rgba(198, 169, 105, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 70%, rgba(198, 169, 105, 0.06) 0%, transparent 60%);
+}
+
+.ad-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ad-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(198, 169, 105, 0.25);
+  background: rgba(198, 169, 105, 0.08);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #C6A969;
+}
+
+.ad-hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #C6A969;
+  animation: ad-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ad-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.ad-hero h1 {
+  font-family: 'Syncopate', sans-serif;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: var(--color-text-primary);
+}
+
+.ad-hero h1 .ad-gold {
+  color: #C6A969;
+}
+
+.ad-hero-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  max-width: 640px;
+}
+
+.ad-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ad-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: 50px;
+  background: #C6A969;
+  color: #1C1C1C;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(198, 169, 105, 0.35);
+}
+
+.ad-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(198, 169, 105, 0.35);
+  filter: brightness(1.1);
+}
+
+.ad-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: 50px;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--grid-color);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ad-btn-secondary:hover {
+  border-color: #C6A969;
+  color: #C6A969;
+  background: rgba(198, 169, 105, 0.15);
+}
+
+/* ----------------------------------------------------------
+   Section Common
+   ---------------------------------------------------------- */
+.ad-section {
+  padding: 100px 2rem;
+  position: relative;
+}
+
+.ad-section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.ad-section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #C6A969;
+  margin-bottom: 1rem;
+}
+
+.ad-section-title {
+  font-family: 'Syncopate', sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  color: var(--color-text-primary);
+  margin-bottom: 1.2rem;
+  line-height: 1.15;
+}
+
+.ad-section-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  max-width: 680px;
+}
+
+.ad-divider {
+  width: 60px;
+  height: 2px;
+  background: #C6A969;
+  margin: 2rem 0;
+  opacity: 0.6;
+}
+
+/* ----------------------------------------------------------
+   Overview Section
+   ---------------------------------------------------------- */
+.ad-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.ad-overview-card {
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--grid-color);
+  background: var(--color-surface);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-overview-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #C6A969, transparent);
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.ad-overview-card:hover {
+  border-color: rgba(198, 169, 105, 0.2);
+  transform: translateY(-4px);
+}
+
+.ad-overview-card:hover::before {
+  opacity: 1;
+}
+
+.ad-overview-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(198, 169, 105, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #C6A969;
+}
+
+.ad-overview-card h3 {
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.ad-overview-card p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+/* ----------------------------------------------------------
+   Features Section
+   ---------------------------------------------------------- */
+.ad-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.ad-feature-card {
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--grid-color);
+  background: var(--color-surface);
+  transition: all 0.35s;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.ad-feature-card:hover {
+  border-color: rgba(198, 169, 105, 0.2);
+}
+
+.ad-feature-num {
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #C6A969;
+  padding: 6px 10px;
+  border: 1px solid rgba(198, 169, 105, 0.2);
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ad-feature-content h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.ad-feature-content p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
+/* ----------------------------------------------------------
+   Workflow Section
+   ---------------------------------------------------------- */
+.ad-workflow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 3rem;
+  position: relative;
+}
+
+.ad-workflow-steps::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, #C6A969, transparent);
+  opacity: 0.3;
+}
+
+.ad-workflow-step {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.ad-workflow-step-num {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1px solid rgba(198, 169, 105, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #C6A969;
+  z-index: 1;
+}
+
+.ad-workflow-step-content h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.ad-workflow-step-content p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
+/* ----------------------------------------------------------
+   Screenshots Section
+   ---------------------------------------------------------- */
+.ad-screenshots-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.ad-screenshot-placeholder {
+  aspect-ratio: 9 / 16;
+  border-radius: 12px;
+  border: 1px dashed rgba(198, 169, 105, 0.25);
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: border-color 0.35s;
+  padding: 1.5rem;
+}
+
+.ad-screenshot-placeholder:hover {
+  border-color: rgba(198, 169, 105, 0.5);
+}
+
+.ad-screenshot-placeholder-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(198, 169, 105, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C6A969;
+}
+
+.ad-screenshot-placeholder span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* ----------------------------------------------------------
+   Audience Section
+   ---------------------------------------------------------- */
+.ad-audience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.ad-audience-card {
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--grid-color);
+  background: var(--color-surface);
+  text-align: center;
+  transition: all 0.35s;
+}
+
+.ad-audience-card:hover {
+  border-color: rgba(198, 169, 105, 0.2);
+  transform: translateY(-3px);
+}
+
+.ad-audience-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(198, 169, 105, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  color: #C6A969;
+}
+
+.ad-audience-card h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.ad-audience-card p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
+/* ----------------------------------------------------------
+   Download Section
+   ---------------------------------------------------------- */
+.ad-download {
+  text-align: center;
+  background: var(--color-surface);
+  border-top: 1px solid var(--grid-color);
+  border-bottom: 1px solid var(--grid-color);
+}
+
+.ad-download-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ad-download-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(198, 169, 105, 0.2);
+  background: rgba(198, 169, 105, 0.06);
+  transition: all 0.35s;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ad-download-badge:hover {
+  border-color: #C6A969;
+  background: rgba(198, 169, 105, 0.15);
+  transform: translateY(-2px);
+}
+
+.ad-download-badge-icon {
+  color: #C6A969;
+}
+
+.ad-download-badge-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.ad-download-badge-text small {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.ad-download-badge-text strong {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ----------------------------------------------------------
+   Support Section
+   ---------------------------------------------------------- */
+.ad-support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.ad-support-card {
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--grid-color);
+  background: var(--color-surface);
+  text-align: center;
+  transition: all 0.35s;
+}
+
+.ad-support-card:hover {
+  border-color: rgba(198, 169, 105, 0.2);
+}
+
+.ad-support-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(198, 169, 105, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  color: #C6A969;
+}
+
+.ad-support-card h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.ad-support-card p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
+.ad-support-card a {
+  color: #C6A969;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.35s;
+}
+
+.ad-support-card a:hover {
+  opacity: 0.8;
+}
+
+/* ----------------------------------------------------------
+   Legal Section
+   ---------------------------------------------------------- */
+.ad-legal {
+  padding: 100px 2rem;
+}
+
+.ad-legal-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ad-legal h1 {
+  font-family: 'Syncopate', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.ad-legal-updated {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+}
+
+.ad-legal h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.ad-legal p,
+.ad-legal ul {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+}
+
+.ad-legal ul {
+  padding-left: 1.5rem;
+}
+
+.ad-legal li {
+  margin-bottom: 0.4rem;
+}
+
+.ad-legal a {
+  color: #C6A969;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ad-legal-placeholder {
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  border: 1px dashed rgba(198, 169, 105, 0.3);
+  background: rgba(198, 169, 105, 0.15);
+  margin: 1.5rem 0;
+}
+
+.ad-legal-placeholder p {
+  color: #C6A969;
+  font-weight: 500;
+  font-style: italic;
+  margin: 0;
+}
+
+/* ----------------------------------------------------------
+   Archi Draft Footer
+   ---------------------------------------------------------- */
+.ad-footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--grid-color);
+  padding: 5rem 2rem 3rem;
+}
+
+.ad-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.ad-footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--grid-color);
+}
+
+.ad-footer-brand h3 {
+  font-family: 'Syncopate', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.ad-footer-brand p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #C6A969;
+  margin-bottom: 1.25rem;
+}
+
+.ad-footer-brand-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  max-width: 280px;
+}
+
+.ad-footer-col h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.ad-footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ad-footer-col li {
+  margin-bottom: 0.75rem;
+}
+
+.ad-footer-col a,
+.ad-footer-col button.ad-footer-link-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.35s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.ad-footer-col a:hover,
+.ad-footer-col button.ad-footer-link-btn:hover {
+  color: #C6A969;
+}
+
+.ad-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ad-footer-copy {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.ad-footer-studio-link {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #C6A969;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.35s;
+  background: none;
+  border: none;
+}
+
+.ad-footer-studio-link:hover {
+  opacity: 0.8;
+}
+
+/* ----------------------------------------------------------
+   Responsive Breakpoints
+   ---------------------------------------------------------- */
+@media (max-width: 900px) {
+  .ad-nav-links {
+    display: none;
+  }
+
+  .ad-nav-links.ad-nav-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--grid-color);
+    padding: 1.5rem 2rem;
+    gap: 1.25rem;
+  }
+
+  .ad-nav-toggle {
+    display: block;
+  }
+
+  .ad-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-screenshots-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ad-audience-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-support-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .ad-hero {
+    padding: 100px 1.25rem 60px;
+  }
+
+  .ad-section {
+    padding: 60px 1.25rem;
+  }
+
+  .ad-hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ad-btn-primary,
+  .ad-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ad-screenshots-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .ad-footer-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .ad-footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .ad-feature-card {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.75rem;
+  }
+
+  .ad-workflow-steps::before {
+    left: 23px;
+  }
+
+  .ad-legal {
+    padding: 80px 1.25rem;
+  }
+}
