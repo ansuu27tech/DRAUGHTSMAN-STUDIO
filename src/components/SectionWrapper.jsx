@@ -7,10 +7,11 @@ const SectionWrapper = ({ children, id, title, subtitle, className = "" }) => {
             id={id}
             className={`section-wrapper ${className}`}
             style={{
-                padding: '100px 20px',
+                padding: '120px 20px 140px 20px',
                 maxWidth: '1200px',
                 margin: '0 auto',
-                position: 'relative'
+                position: 'relative',
+                zIndex: 5
             }}
         >
             {/* Building Assembly Animation (Background) */}

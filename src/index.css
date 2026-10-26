@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syncopate:wght@400;700&family=Syne:wght@700;800&display=swap');
 
 :root {
   /* Default Theme (Dark) */
@@ -19,7 +19,6 @@
   --hero-overlay: rgba(0, 0, 0, 0.5);
   --color-partner-text: #00ff96;
   --nav-bg: rgba(20, 20, 20, 0.8);
-
 
   --font-heading: 'Syncopate', sans-serif;
   --font-body: 'Montserrat', sans-serif;
@@ -115,4 +114,19 @@ a {
 [data-theme="light"] .btn-secondary:hover {
   background: rgba(0, 0, 0, 0.05);
   border-color: var(--color-text-primary);
+}
+
+/* Command Bar Dock - Responsive Layout */
+.command-bar-dock {
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .command-bar-dock {
+    bottom: 0.85rem !important;
+    padding: 0.35rem 0.65rem !important;
+    gap: 0.35rem !important;
+    border-radius: 9999px !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
 }

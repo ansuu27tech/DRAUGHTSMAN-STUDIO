@@ -1,84 +1,76 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FEATURE_STORIES } from './archidraft.config';
+import { Layers, FolderGit2, CheckCheck, Users, Shield, Award } from 'lucide-react';
 
-/**
- * Feature items for Archi Draft.
- * These are neutral placeholder descriptions. 
- * PLACEHOLDER: Replace with actual implemented feature descriptions
- * once the Archi Draft app capabilities are confirmed.
- */
-const features = [
-  {
-    num: '01',
-    title: '2D Drafting Engine',
-    description: 'Draw precise architectural plans with snap-to-grid, dimension lines, and industry-standard annotation tools.',
-  },
-  {
-    num: '02',
-    title: 'Layer Management',
-    description: 'Organize complex drawings using a layered system — toggle visibility, lock layers, and manage element hierarchy effortlessly.',
-  },
-  {
-    num: '03',
-    title: 'Template Library',
-    description: 'Start projects faster with pre-built architectural templates for floor plans, elevations, sections, and site plans.',
-  },
-  {
-    num: '04',
-    title: 'Export & Share',
-    description: 'Export your work in industry-standard formats for seamless collaboration with clients, contractors, and engineering teams.',
-  },
-  {
-    num: '05',
-    title: 'Touch-Optimized Interface',
-    description: 'Designed for mobile and tablet use — intuitive gesture controls that feel natural for on-site reviews and field sketching.',
-  },
-  {
-    num: '06',
-    title: 'Offline Capability',
-    description: 'Work without an internet connection. Your projects save locally and sync when you reconnect — perfect for site visits.',
-  },
+const featureIcons = [
+  Layers,
+  FolderGit2,
+  CheckCheck,
+  Users,
+  Shield,
+  Award
 ];
-
-const featureVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
 
 const ArchiDraftFeatures = () => {
   return (
-    <section className="ad-section" id="ad-features" aria-label="Archi Draft Features">
-      <div className="ad-section-inner">
-        <p className="ad-section-label">Features</p>
-        <h2 className="ad-section-title">Professional Tools, Portable Precision</h2>
-        <div className="ad-divider" aria-hidden="true" />
-        <p className="ad-section-desc">
-          Every feature in Archi Draft is built to support the workflows that
-          architects and engineers rely on daily.
-        </p>
+    <section className="ad-features" id="ad-features" aria-label="Platform Capabilities">
+      <div className="ad-features-inner">
+        {/* Header */}
+        <div className="ad-features-header">
+          <div>
+            <div className="ad-section-eyebrow" aria-hidden="true">
+              <span className="ad-eyebrow-num">08</span>
+              <span className="ad-eyebrow-sep">//</span>
+              <span className="ad-eyebrow-text">ENGINEERED CAPABILITIES</span>
+            </div>
 
+            <h2 className="ad-features-title">
+              Built for Absolute<br />
+              Drafting Rigor.
+            </h2>
+          </div>
+          <div className="ad-features-header-meta">
+            <span className="ad-features-meta-pill">06 FOUNDATIONAL PILLARS</span>
+            <p className="ad-features-meta-desc">
+              Every feature exists to eliminate drawing ambiguities, enforce dimensional precision, and streamline team throughput.
+            </p>
+          </div>
+        </div>
+
+        {/* 6-Card Editorial Grid */}
         <div className="ad-features-grid">
-          {features.map((feat, i) => (
-            <motion.div
-              key={feat.num}
-              className="ad-feature-card"
-              custom={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={featureVariants}
-            >
-              <span className="ad-feature-num">{feat.num}</span>
-              <div className="ad-feature-content">
-                <h3>{feat.title}</h3>
-                <p>{feat.description}</p>
-              </div>
-            </motion.div>
-          ))}
+          {FEATURE_STORIES.map((feature, idx) => {
+            const Icon = featureIcons[idx] || Layers;
+            return (
+              <motion.div
+                key={feature.num}
+                className="ad-feature-card"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.23, 1, 0.32, 1] }}
+              >
+                <div className="ad-feature-card-top">
+                  <span className="ad-feature-num">{feature.num}</span>
+                  <div className="ad-feature-icon-box">
+                    <Icon size={18} />
+                  </div>
+                </div>
+
+                <div className="ad-feature-tag">{feature.tag}</div>
+                <h3 className="ad-feature-title">{feature.title}</h3>
+                <p className="ad-feature-desc">{feature.desc}</p>
+                <p className="ad-feature-detail">{feature.detail}</p>
+
+                <div className="ad-feature-card-footer">
+                  <span className="ad-feature-metric-label">PERFORMANCE BENCHMARK:</span>
+                  <span className="ad-feature-metric-value">{feature.metric}</span>
+                </div>
+                <div className="ad-feature-card-accent" />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

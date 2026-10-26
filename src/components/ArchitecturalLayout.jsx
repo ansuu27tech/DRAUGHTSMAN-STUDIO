@@ -1,40 +1,22 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 
 const ArchitecturalLayout = () => {
     const { scrollY } = useScroll();
     const { theme } = useTheme();
 
-    // Parallax Effect for Big Text
-    const y1 = useTransform(scrollY, [0, 5000], [0, 1000]);
-    const opacity = useTransform(scrollY, [0, 500], [0.05, 0.02]);
-
     // Background Color Shift
-    const darkColors = ['#0a0a0a', '#1a1a1a', '#0a0a0a', '#1a1a1a', '#0a0a0a'];
-    const lightColors = ['#F6F1E6', '#E6E1D8', '#F6F1E6', '#E6E1D8', '#F6F1E6'];
+    const darkColors = ['#0a0a0a', '#111215', '#0a0a0a', '#121316', '#0a0a0a'];
+    const lightColors = ['#F9F8F6', '#EDE8DF', '#F5F2EA', '#EDE8DF', '#F9F8F6'];
 
-    // Note: The original code had specific hexes '#f5f5f5' etc. I am mapping them to semantic theme colors to ensure consistency.
-    // If we want to keep the exact original behavior for Dark Mode, we should use the exact original hex codes for darkColors.
-    // Original: ['#050505', '#f5f5f5', '#0f0f0f', '#f5f5f5', '#050505']
-    // User said: "Keep existing Dark Theme completely unchanged."
-    // So for Dark Mode, I MUST use the original values.
-
-    const darkThemeOriginalColors = ['#050505', '#f5f5f5', '#0f0f0f', '#f5f5f5', '#050505'];
-    // Wait, '#f5f5f5' is widely used in the original dark mode trace? 
-    // If the original site flashed white on scroll, then I should keep it.
-    // Use the original array for dark mode.
-
-    const activeColors = theme === 'light' ? lightColors : darkThemeOriginalColors;
+    const activeColors = theme === 'light' ? lightColors : darkColors;
 
     const bgColor = useTransform(
         scrollY,
         [0, 1000, 2000, 3000, 4000],
         activeColors
     );
-
-    // Smooth color transition
-    const smoothColor = useSpring(bgColor, { stiffness: 50, damping: 20 });
 
     return (
         <motion.div
@@ -45,7 +27,7 @@ const ArchitecturalLayout = () => {
                 width: '100vw',
                 height: '100vh',
                 zIndex: -10,
-                backgroundColor: smoothColor,
+                backgroundColor: bgColor,
                 overflow: 'hidden'
             }}
         >

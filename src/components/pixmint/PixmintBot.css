@@ -1,0 +1,1009 @@
+/* PIXMINT BOT — Blueprint Glassmorphism & Mascot Styling */
+
+.pixmint-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.pixmint-container > * {
+  pointer-events: auto;
+}
+
+/* Floating Action Button (FAB) Wrapper */
+.pixmint-fab-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Floating Action Button (FAB) — Circular, Icon-Only */
+.pixmint-fab {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 35% 30%, #152244 0%, #080f24 100%);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.75), 0 0 16px rgba(16, 185, 129, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pixmint-fab:hover {
+  border-color: #34D399;
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.85), 0 0 24px rgba(16, 185, 129, 0.42), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+}
+
+.pixmint-fab:focus-visible {
+  outline: 2px solid #34D399;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25), 0 12px 30px -4px rgba(0, 0, 0, 0.85);
+}
+
+.pixmint-fab:active {
+  transform: scale(0.94);
+}
+
+.pixmint-fab.is-open {
+  background: #0B132B;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.6);
+}
+
+.pixmint-fab.is-open:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.75);
+}
+
+/* Ambient Breathing Glow */
+.pixmint-fab-ambient-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.25), transparent 70%);
+  pointer-events: none;
+  animation: pixmintAmbientBreath 4s infinite ease-in-out;
+}
+
+@keyframes pixmintAmbientBreath {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.05);
+  }
+}
+
+/* Orbital Spinner when Processing/Loading */
+.pixmint-fab-orbit {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: #34D399;
+  border-right-color: rgba(52, 211, 153, 0.35);
+  animation: pixmintSpin 1.1s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes pixmintSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Icon Presentation Container */
+.pixmint-fab-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.pixmint-fab-x {
+  color: #F8FAFC;
+}
+
+/* Small Animated Status Indicator Pip */
+.pixmint-fab-indicator {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid #080F24;
+  box-shadow: 0 0 8px #10B981;
+  animation: pixmintStatusPulse 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+.pixmint-fab-indicator.is-unread {
+  background: #F59E0B;
+  box-shadow: 0 0 10px #F59E0B;
+}
+
+@keyframes pixmintStatusPulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+}
+
+/* Tooltip on Hover/Focus */
+.pixmint-fab-tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: #080F24;
+  color: #F8FAFC;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), 0 0 12px rgba(16, 185, 129, 0.15);
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1), transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 10;
+}
+
+.pixmint-fab-tooltip::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: #080F24;
+  border-top: 1px solid rgba(16, 185, 129, 0.35);
+  border-right: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.pixmint-fab:hover .pixmint-fab-tooltip,
+.pixmint-fab:focus-visible .pixmint-fab-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (hover: none) {
+  .pixmint-fab-tooltip {
+    display: none;
+  }
+}
+
+/* Mascot Pulse & Eye Flares */
+.pixmint-mascot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Conversational Drawer / Window */
+.pixmint-window {
+  width: min(440px, calc(100vw - 2rem));
+  height: min(650px, calc(100vh - 5rem));
+  background: radial-gradient(ellipse at 50% 0%, #0d1527 0%, #060912 75%, #03050a 100%);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  border-radius: 18px;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(16, 185, 129, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Internal Blueprint Grid Overlay */
+.pixmint-window-grid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(to right, rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header */
+.pixmint-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.15rem;
+  background: rgba(10, 17, 34, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pixmint-header-info {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.pixmint-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.pixmint-title {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #F8FAFC;
+  text-transform: uppercase;
+}
+
+.pixmint-status-pill {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.16);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+}
+
+.pixmint-pulse-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 6px #10B981;
+  animation: pixmintDotPulse 2s infinite ease-in-out;
+}
+
+@keyframes pixmintDotPulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.pixmint-subtitle {
+  margin: 2px 0 0 0;
+  font-size: 0.72rem;
+  color: #94A3B8;
+  letter-spacing: 0.2px;
+}
+
+.pixmint-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pixmint-btn-icon {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.pixmint-btn-icon:hover {
+  color: #F8FAFC;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pixmint-btn-icon.is-close:hover {
+  color: #EF4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Perspective / Role Bar */
+.pixmint-role-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1.15rem;
+  background: rgba(4, 8, 18, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.75rem;
+}
+
+.pixmint-role-prefix {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pixmint-role-icon {
+  color: #10B981;
+}
+
+.pixmint-role-label {
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #64748B;
+  font-size: 0.68rem;
+}
+
+.pixmint-role-dropdown-wrap {
+  position: relative;
+}
+
+.pixmint-role-trigger {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 6px;
+  padding: 0.25rem 0.65rem;
+  color: #34D399;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.pixmint-role-trigger:hover {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.pixmint-role-trigger svg.is-flipped {
+  transform: rotate(180deg);
+}
+
+.pixmint-role-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  background: #090E1D;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 10px;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(16, 185, 129, 0.12);
+  padding: 0.4rem;
+  z-index: 20;
+  min-width: 250px;
+}
+
+.pixmint-role-disclaimer {
+  font-size: 0.62rem;
+  line-height: 1.4;
+  color: #94A3B8;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: monospace;
+}
+
+.pixmint-role-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0.55rem 0.65rem;
+  color: #CBD5E1;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.pixmint-role-item-main {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #F8FAFC;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+.pixmint-role-item-desc {
+  font-size: 0.66rem;
+  color: #64748B;
+  padding-left: 1.25rem;
+}
+
+.pixmint-role-item:hover,
+.pixmint-role-item.is-active {
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.pixmint-role-item.is-active .pixmint-role-item-main {
+  color: #34D399;
+}
+
+/* Messages Area */
+.pixmint-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Welcome Starter Card */
+.pixmint-welcome-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(198, 169, 105, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(198, 169, 105, 0.2);
+}
+
+.pixmint-welcome-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #C6A969;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.pixmint-sparkle-gold {
+  color: #C6A969;
+}
+
+.pixmint-welcome-text {
+  font-size: 0.78rem;
+  color: #CBD5E1;
+  margin: 0 0 0.85rem 0;
+  line-height: 1.45;
+}
+
+/* Category Filters */
+.pixmint-cat-filters {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  scrollbar-width: none;
+}
+
+.pixmint-cat-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.pixmint-cat-btn {
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #94A3B8;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pixmint-cat-btn:hover {
+  color: #F8FAFC;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.pixmint-cat-btn.is-active {
+  background: #10B981;
+  color: #020617;
+  border-color: #10B981;
+  font-weight: 700;
+}
+
+/* Predefined Questions Grid (8-10 cards) */
+.pixmint-predefined-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.pixmint-predefined-card {
+  text-align: left;
+  background: rgba(7, 12, 24, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  color: #E2E8F0;
+  font-size: 0.76rem;
+  line-height: 1.4;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  transition: all 0.18s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.pixmint-predefined-card:hover {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: #10B981;
+  transform: translateX(3px);
+  color: #34D399;
+}
+
+.pixmint-q-number {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #C6A969;
+  font-family: monospace;
+}
+
+.pixmint-q-text {
+  flex: 1;
+}
+
+/* Message Rows */
+.pixmint-message-row {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  max-width: 90%;
+}
+
+.pixmint-message-row.is-user {
+  margin-left: auto;
+  flex-direction: row-reverse;
+}
+
+.pixmint-message-row.is-bot {
+  margin-right: auto;
+}
+
+.pixmint-avatar-col {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pixmint-bubble {
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.pixmint-message-row.is-user .pixmint-bubble {
+  background: linear-gradient(135deg, #D4AF37 0%, #C6A969 100%);
+  color: #0A0D14;
+  font-weight: 500;
+  border-bottom-right-radius: 2px;
+}
+
+.pixmint-message-row.is-bot .pixmint-bubble {
+  background: rgba(13, 20, 36, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #E2E8F0;
+  border-bottom-left-radius: 2px;
+}
+
+/* Markdown Formatted Text Inside Bubbles */
+.pixmint-formatted-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.pixmint-para {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.pixmint-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+
+.pixmint-bullet-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+.pixmint-numbered-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  line-height: 1.5;
+}
+
+.pixmint-item-num {
+  font-weight: 700;
+  color: #C6A969;
+  font-family: monospace;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+.pixmint-empty-line {
+  height: 0.35rem;
+}
+
+.pixmint-bold {
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.pixmint-code {
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #34D399;
+}
+
+.pixmint-inline-link {
+  color: #34D399;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  transition: color 0.15s ease;
+}
+
+.pixmint-inline-link:hover {
+  color: #6EE7B7;
+}
+
+.pixmint-link-arrow {
+  display: inline-block;
+  opacity: 0.8;
+}
+
+/* Grounded Sources Card */
+.pixmint-sources-box {
+  margin-top: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(2, 6, 23, 0.7);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 8px;
+  font-size: 0.7rem;
+}
+
+.pixmint-sources-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #34D399;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  font-size: 0.64rem;
+}
+
+.pixmint-source-item {
+  color: #94A3B8;
+  display: flex;
+  flex-direction: column;
+}
+
+.pixmint-source-name {
+  font-weight: 600;
+  color: #CBD5E1;
+}
+
+.pixmint-source-ref {
+  font-size: 0.64rem;
+  color: #64748B;
+  font-family: monospace;
+}
+
+/* Bubble Footer Metadata (Timestamp & Copy) */
+.pixmint-bubble-footer {
+  margin-top: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.66rem;
+  color: #64748B;
+}
+
+.pixmint-message-row.is-user .pixmint-bubble-footer {
+  color: rgba(15, 23, 42, 0.7);
+  justify-content: flex-end;
+}
+
+.pixmint-copy-btn {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.64rem;
+  transition: all 0.15s ease;
+}
+
+.pixmint-copy-btn:hover {
+  color: #F8FAFC;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pixmint-copy-check {
+  color: #10B981;
+}
+
+/* Typing Loading Dots */
+.pixmint-bubble.is-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
+}
+
+.pixmint-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  animation: pixmintBounce 1.4s infinite ease-in-out both;
+}
+
+.pixmint-dot:nth-child(1) { animation-delay: -0.32s; }
+.pixmint-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes pixmintBounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* Quick Suggestion Chips Rail */
+.pixmint-suggestions {
+  position: relative;
+  z-index: 2;
+  padding: 0.5rem 0.9rem;
+  background: rgba(2, 6, 23, 0.75);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pixmint-suggestions-scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pixmint-suggestions-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pixmint-chip {
+  flex-shrink: 0;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  border-radius: 9999px;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.73rem;
+  color: #CBD5E1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.pixmint-chip:hover {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.14);
+  color: #34D399;
+  transform: translateY(-1px);
+}
+
+.pixmint-chip-icon {
+  color: #34D399;
+  flex-shrink: 0;
+}
+
+/* Input Bar */
+.pixmint-input-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1.15rem;
+  background: #080D1D;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pixmint-input {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.84rem;
+  color: #F8FAFC;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pixmint-input:focus {
+  border-color: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+}
+
+.pixmint-input::placeholder {
+  color: #64748B;
+}
+
+.pixmint-send-btn {
+  width: 40px;
+  height: 40px;
+  background: #10B981;
+  border: none;
+  border-radius: 10px;
+  color: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+  transition: transform 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.pixmint-send-btn:hover:not(:disabled) {
+  background: #34D399;
+  transform: scale(1.05);
+}
+
+.pixmint-send-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Footer Notice */
+.pixmint-footer-notice {
+  position: relative;
+  z-index: 2;
+  padding: 0.45rem 1.15rem;
+  background: #040711;
+  font-size: 0.64rem;
+  color: #64748B;
+  text-align: center;
+  letter-spacing: 0.3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.pixmint-notice-divider {
+  color: #334155;
+}
+
+.pixmint-footer-notice a {
+  color: #C6A969;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
+}
+
+.pixmint-footer-notice a:hover {
+  color: #E2C98A;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .pixmint-container {
+    bottom: 5.25rem;
+    right: 1rem;
+    gap: 0.5rem;
+  }
+
+  body.archidraft-active .pixmint-container {
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+    right: 1rem;
+  }
+
+  .pixmint-fab {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    min-height: 54px;
+  }
+
+  .pixmint-window {
+    position: fixed;
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    height: min(600px, calc(100dvh - 2.5rem));
+    max-height: calc(100dvh - 2.5rem);
+    z-index: 10000;
+  }
+
+  .pixmint-predefined-grid {
+    max-height: 200px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .pixmint-fab,
+  .pixmint-fab-ambient-glow,
+  .pixmint-fab-indicator,
+  .pixmint-fab-orbit,
+  .pixmint-pulse-dot,
+  .pixmint-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}

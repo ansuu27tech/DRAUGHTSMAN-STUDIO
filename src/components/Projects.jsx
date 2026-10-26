@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import SectionWrapper from './SectionWrapper';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Maximize2, Loader2 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 import { fetchAPI } from '../lib/api';
 
 /* ─── Global CSS injected once ─── */
@@ -114,23 +113,56 @@ const globalCSS = `
   }
 `;
 
-/* ─── Gradient edge fades ─── */
-const GradientEdges = () => (
-    <>
-        <div style={{
-            position: 'absolute', top: 0, bottom: 0, left: 0,
-            width: '120px',
-            background: 'linear-gradient(to right, var(--color-bg), transparent)',
-            zIndex: 10, pointerEvents: 'none'
-        }} />
-        <div style={{
-            position: 'absolute', top: 0, bottom: 0, right: 0,
-            width: '120px',
-            background: 'linear-gradient(to left, var(--color-bg), transparent)',
-            zIndex: 10, pointerEvents: 'none'
-        }} />
-    </>
-);
+const defaultProjects = [
+    {
+        id: 'p1',
+        title: "Modernist Villa Residence",
+        category: "Architecture",
+        image: "/architectural.jpeg",
+        description: "Contemporary residential architecture balancing brutalist concrete forms with lush interior courtyards.",
+        tool: "AutoCAD • Revit • 3ds Max"
+    },
+    {
+        id: 'p2',
+        title: "Pavilion of Light",
+        category: "Architecture",
+        image: "/architectural2.jpeg",
+        description: "Minimalist glass and timber pavilion engineered for passive solar orientation and natural ventilation.",
+        tool: "Rhino • Grasshopper • V-Ray"
+    },
+    {
+        id: 'p3',
+        title: "Penthouse Horizon",
+        category: "Interiors",
+        image: "/3d viualization 1.jpeg",
+        description: "Curated luxury interior with bespoke brass millwork, marble finishes, and panoramic skyline views.",
+        tool: "SketchUp • Enscape • Corona"
+    },
+    {
+        id: 'p4',
+        title: "Atelier Workspace",
+        category: "Interiors",
+        image: "/3d viualization 2.jpeg",
+        description: "Industrial-chic architectural studio with ergonomic spatial zoning and acoustic treatment.",
+        tool: "3ds Max • Corona • Photoshop"
+    },
+    {
+        id: 'p5',
+        title: "Monolith Tower Facade",
+        category: "Facade",
+        image: "/3d viualization 3.jpeg",
+        description: "Double-skin ventilated curtain wall system engineered for thermal performance and kinetic daylight control.",
+        tool: "Revit • Dynamo • IFC"
+    },
+    {
+        id: 'p6',
+        title: "Cantilever Civic Center",
+        category: "Structural Design",
+        image: "/structural.jpeg",
+        description: "Post-tensioned concrete diagrid structure spanning 45 meters without interior column supports.",
+        tool: "ETABS • Tekla • AutoCAD"
+    }
+];
 
 /* ─── Single unified project card ─── */
 const ProjectCard = ({ project, index, onClick }) => {
@@ -226,40 +258,46 @@ const ProjectSkeleton = () => (
 
 /* ─── Main Projects section ─── */
 const Projects = () => {
-    const { theme } = useTheme();
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [lightboxProject, setLightboxProject] = useState(null);
-    const [projects, setProjects] = useState([]);
-    const [dynamicCategories, setDynamicCategories] = useState(["All"]);
-    const [loading, setLoading] = useState(true);
+    const [projects, setProjects] = useState(defaultProjects);
+    const [dynamicCategories, setDynamicCategories] = useState(["All", "Architecture", "Interiors", "Facade", "Structural Design"]);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const loadProjects = async () => {
+    const loadProjects = useCallback(async () => {
         setLoading(true);
         setError(null);
-        const { data, error: fetchError } = await fetchAPI('/portfolio');
-
-        if (data && Array.isArray(data) && data.length > 0) {
-            const mappedData = data.map(item => ({
-                id: item.id,
-                title: item.title,
-                category: item.category,
-                image: item.url,
-                description: item.description,
-                tool: item.tags ? item.tags.join(', ') : ""
-            }));
-            setProjects(mappedData);
-            const cats = new Set(mappedData.map(item => item.category).filter(Boolean));
-            setDynamicCategories(["All", ...Array.from(cats)]);
-        } else if (fetchError) {
-            setError(fetchError);
+        try {
+            const { data, isLive } = await fetchAPI('/portfolio');
+            if (data && Array.isArray(data) && data.length > 0) {
+                const mappedData = data.map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    category: item.category,
+                    image: item.url,
+                    description: item.description,
+                    tool: item.tags ? item.tags.join(', ') : ""
+                }));
+                setProjects(mappedData);
+                const cats = new Set(mappedData.map(item => item.category).filter(Boolean));
+                setDynamicCategories(["All", ...Array.from(cats)]);
+                if (import.meta.env?.DEV && isLive) {
+                    console.info(`[Projects] Loaded ${mappedData.length} projects from live API.`);
+                }
+            }
+        } catch (err) {
+            if (defaultProjects.length === 0) {
+                setError(err?.message || 'Failed to load projects');
+            }
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
-    };
+    }, []);
 
     useEffect(() => {
         loadProjects();
-    }, []);
+    }, [loadProjects]);
 
     const filteredProjects = selectedCategory === "All"
         ? projects
@@ -283,8 +321,6 @@ const Projects = () => {
     return (
         <SectionWrapper id="projects" title="Selected Works" subtitle="Portfolio">
             <style>{globalCSS}</style>
-
-            <GradientEdges />
 
             {/* ── Filter Bar ── */}
             {!loading && projects.length > 0 && (

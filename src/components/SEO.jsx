@@ -24,10 +24,6 @@ const SEO = ({
         "email": "contact@draughtsmanstudio.com",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "No,1131, Vedachalam Main Road, Adhanur",
-            "addressLocality": "Guduvanchery",
-            "addressRegion": "Chengalpattu",
-            "postalCode": "603202",
             "addressCountry": "IN"
         }
     };

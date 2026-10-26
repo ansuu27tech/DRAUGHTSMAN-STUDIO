@@ -74,24 +74,27 @@ const ServiceSkeleton = () => (
 );
 
 const Services = () => {
-    const [services, setServices] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    const loadServices = async () => {
-        setLoading(true);
-        const { data } = await fetchAPI('/services');
-
-        if (data && Array.isArray(data) && data.length > 0) {
-            setServices(data);
-        } else {
-            // Use default services when no data from admin panel
-            setServices(DEFAULT_SERVICES);
-        }
-        setLoading(false);
-    };
+    const [services, setServices] = useState(DEFAULT_SERVICES);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        let isMounted = true;
+        const loadServices = async () => {
+            const { data, isLive } = await fetchAPI('/services');
+
+            if (!isMounted) return;
+
+            if (data && Array.isArray(data) && data.length > 0) {
+                setServices(data);
+                if (import.meta.env?.DEV && isLive) {
+                    console.info(`[Services] Loaded ${data.length} services from live API.`);
+                }
+            }
+            setLoading(false);
+        };
+
         loadServices();
+        return () => { isMounted = false; };
     }, []);
 
     return (

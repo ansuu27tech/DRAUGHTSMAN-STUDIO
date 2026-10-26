@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SectionWrapper from './SectionWrapper';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, Clock, Send } from 'lucide-react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { fetchAPI, postAPI } from '../lib/api';
@@ -94,6 +94,7 @@ const Contact = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [formError, setFormError] = useState('');
     const [projectCategory, setProjectCategory] = useState('');
     
     // Dynamic contact info from admin
@@ -109,11 +110,11 @@ const Contact = () => {
     }, []);
 
     // Dynamic contact details with fallbacks
-    const address = contactInfo?.address || "No,1131, Vedachalam Main Road,\nAdhanur, Guduvanchery,\nChengalpattu - 603202";
     const phone = contactInfo?.phone || "+91 91765 61515";
     const email = contactInfo?.email || "contact@draughtsmanstudio.com";
 
     const handleChange = (e) => {
+        setFormError('');
         setFormState({
             ...formState,
             [e.target.name]: e.target.value
@@ -121,6 +122,7 @@ const Contact = () => {
     };
 
     const handlePhoneChange = (value) => {
+        setFormError('');
         setFormState({
             ...formState,
             phone: value
@@ -129,6 +131,27 @@ const Contact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setFormError('');
+
+        // Honeypot spam check
+        if (formState._gotcha) {
+            console.warn('Spam submission detected by honeypot.');
+            setIsSuccess(true);
+            return;
+        }
+
+        // Client-side email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formState.email.trim())) {
+            setFormError('Please enter a valid email address.');
+            return;
+        }
+
+        if (!formState.name.trim()) {
+            setFormError('Please provide your name.');
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
@@ -166,10 +189,10 @@ const Contact = () => {
                 setFormState({ name: '', email: '', phone: '', projectDescription: '', message: '' });
                 setProjectCategory('');
             } else {
-                alert("There was an issue sending your message. Please email us directly at contact@draughtsmanstudio.com");
+                setFormError("There was an issue dispatching your inquiry. Please email us directly at contact@draughtsmanstudio.com.");
             }
-        } catch (error) {
-            alert("Error sending message. Please check your connection.");
+        } catch {
+            setFormError("Network error while sending message. Please email contact@draughtsmanstudio.com directly.");
         } finally {
             setIsSubmitting(false);
         }
@@ -219,12 +242,11 @@ const Contact = () => {
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                         <ContactItem
-                            icon={MapPin}
-                            label="Address"
-                            lines={address.split('\n').length > 1 ? address.split('\n') : [
-                                "No,1131, Vedachalam Main Road,",
-                                "Adhanur, Guduvanchery,",
-                                "Chengalpattu - 603202"
+                            icon={Clock}
+                            label="Studio Schedule"
+                            lines={[
+                                "Monday – Saturday | 9:30 AM – 7:00 PM",
+                                "Project Consultations by Appointment"
                             ]}
                         />
                         <ContactItem
@@ -282,7 +304,37 @@ const Contact = () => {
                     </h4>
 
                     {!isSuccess ? (
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} noValidate>
+                            {formError && (
+                                <div style={{
+                                    background: 'rgba(239, 68, 68, 0.15)',
+                                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                                    borderRadius: '8px',
+                                    padding: '0.85rem 1rem',
+                                    color: '#FCA5A5',
+                                    fontSize: '0.85rem',
+                                    marginBottom: '1.5rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    lineHeight: 1.5
+                                }} role="alert">
+                                    <span>⚠️</span>
+                                    <span>{formError}</span>
+                                </div>
+                            )}
+
+                            {/* Anti-spam honeypot (hidden from real users) */}
+                            <input
+                                type="text"
+                                name="_gotcha"
+                                value={formState._gotcha || ''}
+                                onChange={handleChange}
+                                style={{ display: 'none' }}
+                                tabIndex="-1"
+                                autoComplete="off"
+                                aria-hidden="true"
+                            />
 
                             <div className="form-group">
                                 <input

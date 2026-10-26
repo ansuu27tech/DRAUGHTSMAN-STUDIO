@@ -1,6 +1,6 @@
 import SectionWrapper from './SectionWrapper';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Star, Quote, ChevronLeft, ChevronRight, BadgeCheck, Users, Building2, MapPin } from 'lucide-react';
 import { fetchAPI } from '../lib/api';
 
@@ -348,23 +348,23 @@ const TestimonialCard = ({ testimonial }) => (
 const Testimonials = () => {
     const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    /* Fetch from API, fallback to static */
-    const loadTestimonials = async () => {
-        setLoading(true);
-        const { data } = await fetchAPI('/testimonials');
-
-        if (data && Array.isArray(data) && data.length > 0) {
-            setTestimonials(data);
-        } else {
-            // Fallback to static testimonials
-            setTestimonials(STATIC_TESTIMONIALS);
-        }
-        setLoading(false);
-    };
+    const [_isPaused, setIsPaused] = useState(false);
 
     useEffect(() => {
-        loadTestimonials();
+        let isMounted = true;
+        const load = async () => {
+            setLoading(true);
+            const { data } = await fetchAPI('/testimonials');
+            if (!isMounted) return;
+            if (data && Array.isArray(data) && data.length > 0) {
+                setTestimonials(data);
+            } else {
+                setTestimonials(STATIC_TESTIMONIALS);
+            }
+            setLoading(false);
+        };
+        load();
+        return () => { isMounted = false; };
     }, []);
 
 

@@ -1,128 +1,189 @@
 import React from 'react';
-import { PLAY_STORE_URL, SUPPORT_EMAIL, LEGAL_PAGES } from './archidraft.config';
+import { NAV_ITEMS, SUPPORT_EMAIL } from './archidraft.config';
+import { ShieldCheck, ArrowRight, ExternalLink, Shield, FileText, Award, Bot, UserX, Lock } from 'lucide-react';
+import ArchiDraftWordmark from './ArchiDraftWordmark';
+
+const LEGAL_LINKS = [
+  { id: 'privacy', label: 'Privacy Policy', hash: 'privacy', icon: Shield },
+  { id: 'terms', label: 'Terms of Service', hash: 'terms', icon: FileText },
+  { id: 'deletion', label: 'Account & Data Erasure', hash: 'deletion', icon: UserX },
+  { id: 'verification-policy', label: 'Certificate Verification Policy', hash: 'verification-policy', icon: Award },
+  { id: 'ai-disclaimer', label: 'AI Usage & PIXMINT Disclaimer', hash: 'ai-disclaimer', icon: Bot },
+  { id: 'ip-policy', label: 'Drawing IP & Copyright', hash: 'archi-draft-ip-policy', icon: Lock },
+];
+
+const PLATFORM_LINKS = [
+  { label: 'Download Center', hash: 'download', badge: 'v1.0' },
+  { label: 'Verify Certificate', hash: 'verify', badge: 'Verifiable' },
+  { label: 'Studio Heritage', hash: 'ad-studio' },
+  { label: 'Account Deletion Protocol', hash: 'deletion' },
+];
 
 const ArchiDraftFooter = ({ onNavigate }) => {
-  const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+  const currentYear = new Date().getFullYear();
 
-  const goToLegal = (page) => {
-    window.location.hash = page;
-  };
-
-  const goHome = () => {
-    if (onNavigate) {
-      onNavigate('home');
-    } else {
-      window.location.hash = 'home';
+  const handleNavigate = (e, targetHash) => {
+    // If it's an internal section anchor scroll
+    if (targetHash.startsWith('ad-')) {
+      e.preventDefault();
+      const el = document.getElementById(targetHash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
     }
+
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return; // Allow open in new tab
+    e.preventDefault();
+
+    if (onNavigate) {
+      onNavigate(targetHash);
+    } else {
+      window.location.assign('#' + targetHash);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer className="ad-footer" role="contentinfo" aria-label="Archi Draft Footer">
+    <footer className="ad-footer" role="contentinfo" aria-label="Archi Draft Platform & Legal Information">
       <div className="ad-footer-inner">
-        {/* Top grid */}
+        {/* Top Multi-Column Grid */}
         <div className="ad-footer-top">
-          {/* Brand column */}
+          {/* Brand Column */}
           <div className="ad-footer-brand">
-            <h3>Archi Draft</h3>
-            <p>By Draughtsman Studio</p>
-            <p className="ad-footer-brand-desc">
-              Professional architectural drafting tools — designed for
-              architects, engineers, and design professionals.
-            </p>
-          </div>
+            <div className="ad-footer-brand-header">
+              <img 
+                src="/archidraft/logo-mark-white.png" 
+                alt="Archi Draft Mark" 
+                className="ad-footer-logo"
+              />
+              <div className="ad-footer-brand-titles">
+                <ArchiDraftWordmark variant="compact" />
+                <span className="ad-footer-byline">BY DRAUGHTSMAN STUDIO</span>
+              </div>
+            </div>
 
-          {/* Product column */}
+            <p className="ad-footer-brand-desc">
+              Cryptographic architectural workflow & project lifecycle platform for the built world. Connecting structural engineers, studio administrators, and certified draughtsmen.
+            </p>
+
+            <div className="ad-footer-trust-pills">
+              <span className="ad-trust-pill">
+                <ShieldCheck size={12} className="ad-trust-icon" />
+                <span>CRYPTOGRAPHIC AUDIT TRAIL</span>
+              </span>
+              <span className="ad-trust-pill">
+                <Award size={12} className="ad-trust-icon" />
+                <span>VERIFIABLE CREDENTIALS</span>
+              </span>
+            </div>
+
+            <div className="ad-footer-lineage">
+              <span>DRAUGHTSMAN STUDIO</span>
+              <span className="ad-lineage-sub">CHENNAI, INDIA // EST. 2026</span>
+            </div>
+          </div>
+          
+          {/* Workflow & Sections Column */}
           <div className="ad-footer-col">
-            <h4>Product</h4>
+            <h4>Architecture</h4>
             <ul>
+              {NAV_ITEMS.map((item) => (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    className="ad-footer-link"
+                    onClick={(e) => handleNavigate(e, item.id)}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Platform Services Column */}
+          <div className="ad-footer-col">
+            <h4>Platform Services</h4>
+            <ul>
+              {PLATFORM_LINKS.map((link, idx) => (
+                <li key={idx}>
+                  <a
+                    href={`#${link.hash}`}
+                    className="ad-footer-link"
+                    onClick={(e) => handleNavigate(e, link.hash)}
+                  >
+                    <span>{link.label}</span>
+                    {link.badge && <span className="ad-link-badge">{link.badge}</span>}
+                  </a>
+                </li>
+              ))}
               <li>
-                <button
-                  className="ad-footer-link-btn"
-                  onClick={() => scrollToSection('ad-features')}
-                >
-                  Features
-                </button>
-              </li>
-              <li>
-                <button
-                  className="ad-footer-link-btn"
-                  onClick={() => scrollToSection('ad-workflow')}
-                >
-                  How It Works
-                </button>
-              </li>
-              <li>
-                <a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">
-                  Download
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="ad-footer-link">
+                  <span>Direct Support Desk</span>
+                  <ExternalLink size={11} style={{ opacity: 0.6 }} />
                 </a>
               </li>
             </ul>
           </div>
-
-          {/* Legal column */}
+          
+          {/* Legal & Compliance Column */}
           <div className="ad-footer-col">
-            <h4>Legal</h4>
+            <h4>Legal & Policies</h4>
             <ul>
-              <li>
-                <button
-                  className="ad-footer-link-btn"
-                  onClick={() => goToLegal(LEGAL_PAGES.privacy)}
-                >
-                  Privacy Policy
-                </button>
-              </li>
-              <li>
-                <button
-                  className="ad-footer-link-btn"
-                  onClick={() => goToLegal(LEGAL_PAGES.terms)}
-                >
-                  Terms of Service
-                </button>
-              </li>
-              <li>
-                <button
-                  className="ad-footer-link-btn"
-                  onClick={() => goToLegal(LEGAL_PAGES.deletion)}
-                >
-                  Account / Data Deletion
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Support column */}
-          <div className="ad-footer-col">
-            <h4>Support</h4>
-            <ul>
-              <li>
-                <a href={`mailto:${SUPPORT_EMAIL}`}>Contact Support</a>
-              </li>
-              <li>
-                <button
-                  className="ad-footer-link-btn"
-                  onClick={goHome}
-                >
-                  Back to Draughtsman Studio
-                </button>
-              </li>
+              {LEGAL_LINKS.map((doc) => {
+                const IconComponent = doc.icon;
+                return (
+                  <li key={doc.id}>
+                    <a
+                      href={`#${doc.hash}`}
+                      className="ad-footer-link ad-footer-link--legal"
+                      onClick={(e) => handleNavigate(e, doc.hash)}
+                    >
+                      <IconComponent size={13} className="ad-legal-icon" />
+                      <span>{doc.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Dedicated Horizontal Policy Strip */}
+        <div className="ad-footer-legal-strip" aria-label="Legal & Governance Quick Links">
+          <div className="ad-legal-strip-label">POLICIES & GOVERNANCE:</div>
+          <div className="ad-legal-strip-links">
+            <a href="#privacy" className="ad-strip-link" onClick={(e) => handleNavigate(e, 'privacy')}>Privacy Policy</a>
+            <span className="ad-strip-sep" aria-hidden="true">•</span>
+            <a href="#terms" className="ad-strip-link" onClick={(e) => handleNavigate(e, 'terms')}>Terms of Service</a>
+            <span className="ad-strip-sep" aria-hidden="true">•</span>
+            <a href="#verification-policy" className="ad-strip-link" onClick={(e) => handleNavigate(e, 'verification-policy')}>Certificate Policy</a>
+            <span className="ad-strip-sep" aria-hidden="true">•</span>
+            <a href="#ai-disclaimer" className="ad-strip-link" onClick={(e) => handleNavigate(e, 'ai-disclaimer')}>AI Guidance Disclaimer</a>
+            <span className="ad-strip-sep" aria-hidden="true">•</span>
+            <a href="#deletion" className="ad-strip-link" onClick={(e) => handleNavigate(e, 'deletion')}>Account Deletion</a>
+            <span className="ad-strip-sep" aria-hidden="true">•</span>
+            <a href="#legal" className="ad-strip-link ad-strip-link--accent" onClick={(e) => handleNavigate(e, 'legal')}>
+              <span>Legal Center Hub</span>
+              <ArrowRight size={11} />
+            </a>
+          </div>
+        </div>
+        
+        {/* Bottom Copyright & Navigation Bar */}
         <div className="ad-footer-bottom">
-          <p className="ad-footer-copy">
-            &copy; {new Date().getFullYear()} Draughtsman Studio. All rights reserved.
-          </p>
-          <button
+          <div className="ad-footer-copy">
+            &copy; {currentYear} Draughtsman Studio. All rights reserved. Registered architectural practice & software systems.
+          </div>
+          <a
+            href="#home"
             className="ad-footer-studio-link"
-            onClick={goHome}
+            onClick={(e) => handleNavigate(e, 'home')}
           >
-            ← Back to Draughtsman Studio
-          </button>
+            <span>RETURN TO DRAUGHTSMAN STUDIO</span>
+            <ArrowRight size={12} />
+          </a>
         </div>
       </div>
     </footer>

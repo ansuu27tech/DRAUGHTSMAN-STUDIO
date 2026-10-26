@@ -25,7 +25,7 @@ const Footer = () => {
     }, []);
 
     // Dynamic social links with fallbacks
-    const linkedinUrl = socials?.linkedin || "https://www.linkedin.com/in/mohammed-mosin-6b9b213a2";
+    const linkedinUrl = socials?.linkedin || "https://www.linkedin.com/company/draughtsman-studio";
     const instagramUrl = socials?.instagram || "https://www.instagram.com/draughtsmanthe?igsh=ZGUyc2l6c2d6Z2x5";
 
     return (
@@ -148,6 +148,46 @@ const Footer = () => {
                 }}>
                     © 2026 DRAUGHTSMAN Studio. All rights reserved.
                 </p>
+
+                {/* Legal & Policies Navigation */}
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '1.25rem',
+                    marginBottom: '1.5rem',
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: '0.72rem',
+                    letterSpacing: '1px',
+                    flexWrap: 'wrap'
+                }}>
+                    <a 
+                        href="#privacy" 
+                        style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', transition: 'color 0.2s' }}
+                        onMouseOver={(e) => (e.target.style.color = '#C6A969')}
+                        onMouseOut={(e) => (e.target.style.color = 'var(--color-text-secondary)')}
+                    >
+                        Privacy Policy
+                    </a>
+                    <span style={{ color: '#C6A969', opacity: 0.4 }}>•</span>
+                    <a 
+                        href="#terms" 
+                        style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', transition: 'color 0.2s' }}
+                        onMouseOver={(e) => (e.target.style.color = '#C6A969')}
+                        onMouseOut={(e) => (e.target.style.color = 'var(--color-text-secondary)')}
+                    >
+                        Terms of Service
+                    </a>
+                    <span style={{ color: '#C6A969', opacity: 0.4 }}>•</span>
+                    <a 
+                        href="#legal" 
+                        style={{ color: 'var(--color-text-secondary)', textDecoration: 'none', transition: 'color 0.2s' }}
+                        onMouseOver={(e) => (e.target.style.color = '#C6A969')}
+                        onMouseOut={(e) => (e.target.style.color = 'var(--color-text-secondary)')}
+                    >
+                        Legal Center
+                    </a>
+                </div>
 
                 {/* Designer Credit */}
                 <div style={{

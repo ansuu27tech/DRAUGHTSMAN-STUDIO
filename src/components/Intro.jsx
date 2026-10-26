@@ -1,10 +1,6 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 
 const Intro = () => {
-    // Logo SVG Path (Abstract DS Cube/Architectural shape)
-    const logoPath = "M50 20 L90 40 L90 90 L50 110 L10 90 L10 40 Z M50 20 L50 70 M10 40 L50 70 L90 40 M50 70 L50 110";
-
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -27,33 +23,12 @@ const Intro = () => {
         }
     };
 
-    const pathVariants = {
-        hidden: { pathLength: 0, opacity: 0 },
-        visible: {
-            pathLength: 1,
-            opacity: 1,
-            transition: {
-                pathLength: { duration: 2, ease: "easeInOut" },
-                opacity: { duration: 0.2 }
-            }
-        }
-    };
-
     const textVariants = {
         hidden: { y: 20, opacity: 0 },
         visible: {
             y: 0,
             opacity: 1,
             transition: { delay: 2.2, duration: 0.8, ease: "easeOut" }
-        }
-    };
-
-    const shineVariants = {
-        hidden: { rotate: 45, x: -100, opacity: 0 },
-        visible: {
-            x: 200,
-            opacity: [0, 1, 0],
-            transition: { delay: 2.5, duration: 1, ease: "linear" }
         }
     };
 

@@ -22,8 +22,8 @@ const Scene3D = () => {
                 {/* pages should roughly match the total height of the App content */}
                 <ScrollControls pages={8} damping={0.2}>
                     <Scroll>
-                        {/* Hero Section Element */}
-                        <WireframeBuilding position={[1.5, 0, 0]} />
+                        {/* Hero Section Subtle Atmospheric Element */}
+                        <WireframeBuilding position={[2.4, -0.2, -1.5]} scale={0.85} />
 
                         {/* Additional atmospheric elements could go here */}
 

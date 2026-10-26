@@ -74,14 +74,14 @@ const About = () => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
-                        src="/about-image.jpg"
-                        alt="Architectural Leader"
+                        src="/architectural.jpeg"
+                        alt="Architectural Drafting & Engineering Plans"
                         style={{
                             width: '100%',
                             height: '100%',
                             objectFit: 'cover',
-                            objectPosition: 'top center', // Focus on face
-                            filter: 'grayscale(20%) contrast(110%)'
+                            objectPosition: 'center',
+                            filter: 'contrast(105%)'
                         }}
                     />
 

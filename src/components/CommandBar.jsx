@@ -1,18 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Home, User, Folder, Users, Mail } from 'lucide-react';
+import { Home, User, Folder, Users, Mail, Layers, Award, Download } from 'lucide-react';
 
 const navItems = [
     { id: 'hero', icon: null, label: 'Home', image: '/draughtsmanstudio.jpg' },
     { id: 'about', icon: User, label: 'About' },
     { id: 'projects', icon: Folder, label: 'Projects' },
-    { id: 'team', icon: Users, label: 'Team' },
+    { id: 'archidraft', icon: Layers, label: 'Archi Draft', link: '#archi-draft' },
+    { id: 'download', icon: Download, label: 'Get App', link: '#download' },
+    { id: 'verify', icon: Award, label: 'Verify Cert', link: '#verify' },
     { id: 'contact', icon: Mail, label: 'Contact' }
 ];
 
 const CommandBar = () => {
-    const scrollToSection = (id) => {
-        const element = document.getElementById(id);
+    const handleClick = (item) => {
+        if (item.link) {
+            window.location.assign(item.link);
+            return;
+        }
+        const element = document.getElementById(item.id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
@@ -20,27 +26,31 @@ const CommandBar = () => {
 
     return (
         <motion.div
+            className="command-bar-dock"
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 1, duration: 0.8, type: "spring" }}
             style={{
                 position: 'fixed',
-                bottom: '2rem',
+                bottom: '1.75rem',
                 left: '50%',
                 translateX: '-50%',
-                zIndex: 100,
+                zIndex: 90,
                 background: 'var(--nav-bg)',
                 backdropFilter: 'blur(12px)',
                 borderRadius: '50px',
-                padding: '0.8rem 1.5rem',
+                padding: '0.6rem 1.25rem',
                 display: 'flex',
-                gap: '1.5rem',
+                alignItems: 'center',
+                gap: 'clamp(0.5rem, 1.8vw, 1.5rem)',
                 border: '1px solid var(--btn-border-secondary)',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+                boxShadow: '0 10px 30px rgba(0,0,0,0.35)',
+                maxWidth: 'calc(100vw - 1.5rem)',
+                boxSizing: 'border-box'
             }}
         >
             {navItems.map((item) => (
-                <NavItem key={item.id} item={item} onClick={() => scrollToSection(item.id)} />
+                <NavItem key={item.id} item={item} onClick={() => handleClick(item)} />
             ))}
         </motion.div>
     );
@@ -59,24 +69,24 @@ const NavItem = ({ item, onClick }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '4px',
+                gap: '3px',
                 position: 'relative',
-                padding: '5px'
+                padding: 'clamp(3px, 0.8vw, 6px)'
             }}
         >
             <motion.div
                 variants={{
-                    hover: { y: -5, color: 'var(--color-text-primary)' }
+                    hover: { y: -4, color: 'var(--color-text-primary)' }
                 }}
             >
                 {item.image ? (
                     <img
                         src={item.image}
                         alt="Home"
-                        style={{ width: '28px', height: '28px', objectFit: 'cover', borderRadius: '50%' }}
+                        style={{ width: 'clamp(20px, 4vw, 26px)', height: 'clamp(20px, 4vw, 26px)', objectFit: 'cover', borderRadius: '50%' }}
                     />
                 ) : (
-                    <item.icon size={20} />
+                    <item.icon size={18} />
                 )}
             </motion.div>
 

@@ -1,73 +1,80 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import ArchiDraftNav from './ArchiDraftNav';
-import ArchiDraftHero from './ArchiDraftHero';
-import ArchiDraftOverview from './ArchiDraftOverview';
-import ArchiDraftFeatures from './ArchiDraftFeatures';
-import ArchiDraftWorkflow from './ArchiDraftWorkflow';
-import ArchiDraftScreenshots from './ArchiDraftScreenshots';
-import ArchiDraftAudience from './ArchiDraftAudience';
-import ArchiDraftDownload from './ArchiDraftDownload';
-import ArchiDraftSupport from './ArchiDraftSupport';
-import ArchiDraftFooter from './ArchiDraftFooter';
-import { ArchiDraftPrivacy, ArchiDraftTerms, ArchiDraftDeletion } from './ArchiDraftLegal';
-import { LEGAL_PAGES } from './archidraft.config';
-
+import React, { useEffect } from 'react';
 import './ArchiDraft.css';
 
-/**
- * Main Archi Draft experience container.
- * Handles the product landing page and legal sub-pages.
- * 
- * @param {string} currentView - The current hash-based view
- * @param {function} onNavigate - Callback to switch views
- */
+// Components
+import ArchiDraftNav from './ArchiDraftNav';
+import ArchiDraftHero from './ArchiDraftHero';
+import ArchiDraftReveal from './ArchiDraftReveal';
+import ArchiDraftProblem from './ArchiDraftProblem';
+import ArchiDraftSystem from './ArchiDraftSystem';
+import ArchiDraftWorkflow from './ArchiDraftWorkflow';
+import ArchiDraftInterface from './ArchiDraftInterface';
+import ArchiDraftVersions from './ArchiDraftVersions';
+import ArchiDraftFeatures from './ArchiDraftFeatures';
+import ArchiDraftArchVisual from './ArchiDraftArchVisual';
+import ArchiDraftMobile from './ArchiDraftMobile';
+import ArchiDraftStudio from './ArchiDraftStudio';
+import ArchiDraftFAQ from './ArchiDraftFAQ';
+import ArchiDraftCTA from './ArchiDraftCTA';
+import ArchiDraftFooter from './ArchiDraftFooter';
+
+import ArchiDraftDownload from './ArchiDraftDownload';
+import ArchiDraftLegal from './ArchiDraftLegal';
+
 const ArchiDraft = ({ currentView, onNavigate }) => {
-  // Determine if we're on a legal sub-page
-  const isPrivacy = currentView === LEGAL_PAGES.privacy;
-  const isTerms = currentView === LEGAL_PAGES.terms;
-  const isDeletion = currentView === LEGAL_PAGES.deletion;
-  const isLegalPage = isPrivacy || isTerms || isDeletion;
+  const isDownloadPage = currentView === 'archi-draft-download' || currentView === 'download';
+  const isLegalPage = !isDownloadPage && currentView !== 'archi-draft';
 
-  const seoTitle = isPrivacy
-    ? 'Privacy Policy | Archi Draft'
-    : isTerms
-      ? 'Terms of Service | Archi Draft'
-      : isDeletion
-        ? 'Account & Data Deletion | Archi Draft'
-        : 'Archi Draft | Professional Architectural Drafting';
+  useEffect(() => {
+    // Scroll to top on mount
+    window.scrollTo(0, 0);
 
-  const seoDescription = isLegalPage
-    ? 'Archi Draft legal information — by Draughtsman Studio.'
-    : 'Archi Draft — professional architectural drafting and design tools by Draughtsman Studio. Available on Google Play.';
+    // Update document title and meta description
+    if (isDownloadPage) {
+      document.title = 'Download Archi Draft — Multi-Platform CAD Workspace | Draughtsman Studio';
+    } else if (isLegalPage) {
+      document.title = 'Archi Draft Legal & Policies | Draughtsman Studio';
+    } else {
+      document.title = 'Archi Draft — Architectural CAD & Drawing Workflow | Draughtsman Studio';
+    }
+    
+    // Add specific class to body for global scoping if needed
+    document.body.classList.add('archidraft-active');
+    
+    return () => {
+      document.body.classList.remove('archidraft-active');
+      document.title = 'Draughtsman Studio';
+    };
+  }, [currentView, isDownloadPage, isLegalPage]);
 
   return (
     <div className="archidraft">
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDescription} />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDescription} />
-      </Helmet>
-
       <ArchiDraftNav onNavigate={onNavigate} />
-
-      {isPrivacy && <ArchiDraftPrivacy />}
-      {isTerms && <ArchiDraftTerms />}
-      {isDeletion && <ArchiDraftDeletion />}
-
-      {!isLegalPage && (
-        <main>
-          <ArchiDraftHero />
-          <ArchiDraftOverview />
-          <ArchiDraftFeatures />
-          <ArchiDraftWorkflow />
-          <ArchiDraftScreenshots />
-          <ArchiDraftAudience />
-          <ArchiDraftDownload />
-          <ArchiDraftSupport />
-        </main>
-      )}
+      
+      <main>
+        {isDownloadPage ? (
+          <ArchiDraftDownload isStandalone onNavigate={onNavigate} />
+        ) : isLegalPage ? (
+          <ArchiDraftLegal currentView={currentView} onNavigate={onNavigate} />
+        ) : (
+          <>
+            <ArchiDraftHero />
+            <ArchiDraftReveal />
+            <ArchiDraftProblem />
+            <ArchiDraftSystem />
+            <ArchiDraftWorkflow />
+            <ArchiDraftInterface />
+            <ArchiDraftVersions />
+            <ArchiDraftFeatures />
+            <ArchiDraftArchVisual />
+            <ArchiDraftMobile />
+            <ArchiDraftDownload isStandalone={false} onNavigate={onNavigate} />
+            <ArchiDraftStudio />
+            <ArchiDraftFAQ />
+            <ArchiDraftCTA />
+          </>
+        )}
+      </main>
 
       <ArchiDraftFooter onNavigate={onNavigate} />
     </div>

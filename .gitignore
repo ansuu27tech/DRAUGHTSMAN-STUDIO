@@ -29,3 +29,30 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+
+# Agent & local workflow artifacts
+.agent/
+.agents/
+.gemini/
+.gsd/
+scripts/
+adapters/
+DRG/
+ENG/
+STUDENT/
+PIXELMINT-BOT/
+
+# Scratch root images & metadata
+/*.png
+/*.jpg
+GSD-STYLE.md
+PROJECT_RULES.md
+VERSION
+model_capabilities.yaml
+
+

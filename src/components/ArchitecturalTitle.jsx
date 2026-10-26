@@ -64,10 +64,15 @@ const ArchitecturalTitle = ({ title, subtitle, align = "center" }) => {
             <motion.h2
                 style={{
                     fontFamily: 'var(--font-heading)',
-                    fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                    fontSize: 'clamp(1.85rem, 4.2vw, 3.2rem)',
+                    fontWeight: 800,
+                    lineHeight: 1.18,
+                    letterSpacing: '-0.01em',
                     textTransform: 'uppercase',
                     position: 'relative',
                     display: 'inline-block',
+                    padding: '0.25rem 0.5rem',
+                    margin: 0,
                     scaleX: smoothScale, // Subtle stretch
                     transformOrigin: align === 'center' ? 'center' : 'left'
                 }}

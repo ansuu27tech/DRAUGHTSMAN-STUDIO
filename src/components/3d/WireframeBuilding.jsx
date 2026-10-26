@@ -36,13 +36,13 @@ const WireframeBuilding = (props) => {
             <gridHelper
                 args={[4, 10]}
                 position={[0, -1.5, 0]}
-                material-opacity={foundationPhase * 0.2}
+                material-opacity={foundationPhase * 0.08}
                 material-transparent
-                material-color="#ffffff"
+                material-color="#C6A969"
             />
             <mesh position={[0, -1.55, 0]}>
                 <boxGeometry args={[1.2, 0.1, 1.2]} />
-                <meshBasicMaterial color="#ffffff" wireframe transparent opacity={foundationPhase * 0.5} />
+                <meshBasicMaterial color="#C6A969" wireframe transparent opacity={foundationPhase * 0.15} />
             </mesh>
 
             {/* 2. Structural Frame (Columns/Beams) */}
@@ -50,44 +50,44 @@ const WireframeBuilding = (props) => {
                 {/* Main Columns */}
                 <mesh position={[-0.45, 0, -0.45]}>
                     <boxGeometry args={[0.05, 3, 0.05]} />
-                    <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#C6A969" transparent opacity={0.15} />
                 </mesh>
                 <mesh position={[0.45, 0, -0.45]}>
                     <boxGeometry args={[0.05, 3, 0.05]} />
-                    <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#C6A969" transparent opacity={0.15} />
                 </mesh>
                 <mesh position={[-0.45, 0, 0.45]}>
                     <boxGeometry args={[0.05, 3, 0.05]} />
-                    <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#C6A969" transparent opacity={0.15} />
                 </mesh>
                 <mesh position={[0.45, 0, 0.45]}>
                     <boxGeometry args={[0.05, 3, 0.05]} />
-                    <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#C6A969" transparent opacity={0.15} />
                 </mesh>
             </group>
 
             {/* 3. Massing Form (Transparent Slabs/Volume) */}
             <mesh position={[0, 0, 0]} scale={[0.9, 0.98, 0.9]}>
                 <boxGeometry args={[1, 3, 1]} />
-                <meshBasicMaterial color="#ffffff" transparent opacity={massingPhase * 0.05} />
+                <meshBasicMaterial color="#C6A969" transparent opacity={massingPhase * 0.03} />
             </mesh>
             {/* Internal Floors */}
             {[...Array(6)].map((_, i) => (
                 <mesh key={i} position={[0, -1.2 + (i * 0.5), 0]} scale={[1, 1, 1]}>
                     <boxGeometry args={[0.9, 0.02, 0.9]} />
-                    <meshBasicMaterial color="#ffffff" transparent opacity={massingPhase * 0.3} />
+                    <meshBasicMaterial color="#C6A969" transparent opacity={massingPhase * 0.08} />
                 </mesh>
             ))}
 
             {/* 4. Facade Lines (Exterior Outline) */}
             <lineSegments position={[0, 0, 0]}>
                 <edgesGeometry args={[new THREE.BoxGeometry(1, 3, 1)]} />
-                <lineBasicMaterial color="#ffffff" linewidth={1} transparent opacity={facadePhase * 0.8} />
+                <lineBasicMaterial color="#C6A969" linewidth={1} transparent opacity={facadePhase * 0.22} />
             </lineSegments>
             {/* Offset Detail Facade */}
             <lineSegments position={[0.2, -0.5, 0.2]}>
                 <edgesGeometry args={[new THREE.BoxGeometry(1, 2, 1)]} />
-                <lineBasicMaterial color="#ffffff" linewidth={1} transparent opacity={facadePhase * 0.5} />
+                <lineBasicMaterial color="#8E8B82" linewidth={1} transparent opacity={facadePhase * 0.14} />
             </lineSegments>
 
         </group>
