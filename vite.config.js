@@ -5,6 +5,7 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 
 // https://vite.dev/config/
 export default defineConfig({
+  appType: 'spa',
   plugins: [react(), cloudflare()],
   base: '/',
   server: {

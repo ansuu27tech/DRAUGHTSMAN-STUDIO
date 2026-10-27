@@ -65,7 +65,7 @@ const Hero = () => {
     const ctaLink = heroData?.cta_link || "#projects";
 
     return (
-        <section style={{
+        <section id="hero" style={{
             position: 'relative',
             minHeight: '100vh',
             width: '100%',

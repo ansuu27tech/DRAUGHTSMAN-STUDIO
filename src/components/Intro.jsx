@@ -1,6 +1,17 @@
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const Intro = () => {
+const Intro = ({ onDismiss }) => {
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
+                onDismiss?.();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onDismiss]);
+
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -9,9 +20,9 @@ const Intro = () => {
         },
         exit: {
             opacity: 0,
-            scale: 1.1,
-            filter: "blur(10px)",
-            transition: { duration: 0.8, ease: "easeInOut" }
+            scale: 1.05,
+            filter: "blur(8px)",
+            transition: { duration: 0.5, ease: "easeInOut" }
         }
     };
 
@@ -116,7 +127,42 @@ const Intro = () => {
                 />
             </motion.h1>
 
+            {/* Skip Intro Button */}
+            <motion.button
+                onClick={onDismiss}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                style={{
+                    position: 'absolute',
+                    bottom: '2rem',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(197, 160, 89, 0.3)',
+                    color: 'var(--color-text-secondary)',
+                    padding: '0.4rem 1.2rem',
+                    borderRadius: '20px',
+                    fontSize: '0.72rem',
+                    fontFamily: 'var(--font-mono, monospace)',
+                    letterSpacing: '1.5px',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.25s ease',
+                    backdropFilter: 'blur(8px)',
+                    zIndex: 10
+                }}
+                onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#C5A059';
+                    e.currentTarget.style.borderColor = '#C5A059';
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--color-text-secondary)';
+                    e.currentTarget.style.borderColor = 'rgba(197, 160, 89, 0.3)';
+                }}
+            >
+                Skip Intro [ESC]
+            </motion.button>
         </motion.div>
+
     );
 };
 

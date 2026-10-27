@@ -303,25 +303,33 @@
 
 .ad-filter-btn {
   padding: 0.65rem 1.4rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--ad-text-secondary, #A09E96);
-  border-radius: 100px;
+  border-radius: 980px;
   font-family: var(--ad-font-mono, monospace);
   font-size: 0.8rem;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   cursor: pointer;
-  transition: all 0.25s ease;
-  min-height: 48px;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  user-select: none;
 }
 
 .ad-filter-btn:hover {
   color: #FFF;
-  border-color: rgba(197, 160, 89, 0.5);
-  background: rgba(197, 160, 89, 0.05);
+  border-color: rgba(197, 160, 89, 0.45);
+  background: rgba(197, 160, 89, 0.08);
+}
+
+.ad-filter-btn:active {
+  transform: scale(0.96);
+  transition: transform 100ms ease-out;
 }
 
 .ad-filter-btn.active {
@@ -329,39 +337,43 @@
   color: #0A0A0C;
   font-weight: 700;
   border-color: var(--color-accent, #C5A059);
-  box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+  box-shadow: 0 4px 18px rgba(197, 160, 89, 0.35);
 }
 
-/* Platform Cards Grid */
+/* Platform Cards Grid (Apple Grid Alignment & Breathing Room) */
 .ad-platform-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 2rem;
   margin-bottom: 5rem;
 }
 
-/* Individual Platform Card */
+/* Individual Platform Card (Apple Translucent Material & Continuous Curves) */
 .ad-platform-card {
-  background: rgba(18, 19, 23, 0.85);
+  background: rgba(14, 16, 21, 0.78);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 2rem;
+  border-radius: 18px;
+  padding: 2.2rem;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.35s ease;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .ad-platform-card:hover {
-  border-color: rgba(197, 160, 89, 0.4);
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  border-color: rgba(197, 160, 89, 0.45);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(197, 160, 89, 0.25);
 }
 
 .ad-platform-card--featured {
-  border-color: rgba(197, 160, 89, 0.4);
-  background: linear-gradient(160deg, rgba(24, 25, 30, 0.95), rgba(15, 16, 20, 0.9));
+  border-color: rgba(197, 160, 89, 0.45);
+  background: linear-gradient(165deg, rgba(24, 26, 33, 0.92) 0%, rgba(13, 15, 19, 0.88) 100%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 30px rgba(197, 160, 89, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .ad-card-header {
@@ -374,13 +386,19 @@
 .ad-platform-icon-wrap {
   width: 48px;
   height: 48px;
-  border-radius: 8px;
+  border-radius: 12px;
   background: rgba(197, 160, 89, 0.1);
-  border: 1px solid rgba(197, 160, 89, 0.25);
+  border: 1px solid rgba(197, 160, 89, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-accent, #C5A059);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.ad-platform-card:hover .ad-platform-icon-wrap {
+  transform: scale(1.05);
+  border-color: var(--color-accent, #C5A059);
 }
 
 /* Status Badges */
@@ -389,8 +407,8 @@
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 1px;
-  padding: 0.35rem 0.8rem;
-  border-radius: 100px;
+  padding: 0.38rem 0.85rem;
+  border-radius: 980px;
   text-transform: uppercase;
 }
 
@@ -408,70 +426,97 @@
 
 .ad-status-pill--neutral {
   background: rgba(255, 255, 255, 0.05);
-  color: #8C8A82;
+  color: #9C9A92;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ad-card-platform-name {
   font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   font-weight: 700;
   color: #FFFFFF;
   margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
 }
 
 .ad-card-tagline {
-  font-family: var(--font-body, 'Inter', sans-serif);
+  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif);
   font-size: 0.88rem;
   color: var(--ad-text-secondary, #A09E96);
-  line-height: 1.5;
+  line-height: 1.55;
   margin-bottom: 1.5rem;
-  min-height: 2.6rem;
+  min-height: 2.75rem;
 }
 
-/* Metadata Rows */
+/* Metadata Rows (Apple Inspector Grid: Fixed Column Separation, Zero Collision) */
 .ad-card-meta-list {
-  background: rgba(10, 11, 14, 0.6);
-  border-radius: 6px;
-  padding: 1rem;
+  background: rgba(10, 12, 16, 0.68);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
   margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  gap: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .ad-meta-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--ad-font-mono, monospace);
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  align-items: baseline;
+  column-gap: 14px;
+  font-family: var(--ad-font-mono, 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Consolas, monospace);
   font-size: 0.74rem;
+  line-height: 1.45;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+}
+
+.ad-meta-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .ad-meta-label {
-  color: #7A7870;
+  color: #8C8A82;
   text-transform: uppercase;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  user-select: none;
 }
 
 .ad-meta-value {
-  color: #DCD8CD;
+  color: #ECE8DD;
   font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  letter-spacing: 0.15px;
+}
+
+.ad-meta-value--identifier {
+  font-size: 0.7rem;
+  color: #D4B26F;
 }
 
 /* Distribution Notice Box */
 .ad-card-status-notice {
   background: rgba(197, 160, 89, 0.06);
   border-left: 2px solid var(--color-accent, #C5A059);
-  padding: 0.75rem 1rem;
-  border-radius: 0 4px 4px 0;
+  padding: 0.85rem 1.1rem;
+  border-radius: 0 8px 8px 0;
   margin-bottom: 1.5rem;
   font-size: 0.8rem;
-  line-height: 1.5;
+  line-height: 1.55;
   color: #C0BEB4;
 }
 
-/* Action Buttons */
+/* Action Buttons (Apple Fluid Interaction & Direct Press Feedback) */
 .ad-card-actions {
   margin-top: auto;
   display: flex;
@@ -488,25 +533,27 @@
   background: var(--color-accent, #C5A059);
   color: #0A0A0C;
   border: 1px solid var(--color-accent, #C5A059);
-  border-radius: 6px;
+  border-radius: 12px;
   font-family: var(--ad-font-mono, monospace);
   font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
   min-height: 48px;
   text-decoration: none;
 }
 
 .ad-primary-action-btn:hover {
   background: #D4B26F;
-  box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+  box-shadow: 0 6px 24px rgba(197, 160, 89, 0.4);
+  transform: translateY(-1px);
 }
 
 .ad-primary-action-btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+  transition: transform 100ms ease-out;
 }
 
 .ad-secondary-action-btn {
@@ -515,26 +562,28 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
   color: #E2DFD6;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
   font-family: var(--ad-font-mono, monospace);
   font-size: 0.78rem;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
   min-height: 48px;
 }
 
 .ad-secondary-action-btn:hover {
   border-color: rgba(197, 160, 89, 0.5);
-  background: rgba(197, 160, 89, 0.05);
+  background: rgba(197, 160, 89, 0.08);
+  color: #FFF;
 }
 
 .ad-secondary-action-btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
+  transition: transform 100ms ease-out;
 }
 
 .ad-disabled-action-btn {
@@ -543,16 +592,17 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
   color: #6A6860;
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
   font-family: var(--ad-font-mono, monospace);
   font-size: 0.76rem;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   cursor: not-allowed;
   min-height: 48px;
+  user-select: none;
 }
 
 /* Expandable Drawer */

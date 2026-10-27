@@ -15,7 +15,6 @@ import {
   ChevronRight,
   ShieldCheck,
   CheckCircle2,
-  Clock,
   Layers
 } from 'lucide-react';
 
@@ -32,17 +31,17 @@ const stageIcons = [
 ];
 
 const ArchiDraftWorkflow = () => {
-  const [activeStage, setActiveStage] = useState(4); // Default to DRAFT
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [activeStage, setActiveStage] = useState(0); // Start at Stage 01 CREATE
+  const [isPaused, setIsPaused] = useState(false);
 
-  // Auto-advance toggle
+  // Automated assembly line flow: continuously advances through the 9 stages
   useEffect(() => {
-    if (!isPlaying) return;
+    if (isPaused) return;
     const interval = setInterval(() => {
       setActiveStage((prev) => (prev + 1) % WORKFLOW_STAGES.length);
-    }, 4500);
+    }, 4200);
     return () => clearInterval(interval);
-  }, [isPlaying]);
+  }, [isPaused, activeStage]);
 
   const current = WORKFLOW_STAGES[activeStage];
   const IconComponent = stageIcons[activeStage] || PenTool;
@@ -88,10 +87,7 @@ const ArchiDraftWorkflow = () => {
                 <button
                   key={stage.num}
                   className={`ad-pipeline-node ${isActive ? 'active' : ''} ${isPassed ? 'passed' : ''}`}
-                  onClick={() => {
-                    setActiveStage(idx);
-                    setIsPlaying(false);
-                  }}
+                  onClick={() => setActiveStage(idx)}
                   role="tab"
                   aria-selected={isActive}
                   aria-label={`Stage ${stage.num}: ${stage.title} (${stage.role})`}
@@ -138,10 +134,7 @@ const ArchiDraftWorkflow = () => {
                 key={s.num}
                 type="button"
                 className={`ad-mobile-dot ${idx === activeStage ? 'active' : ''} ${idx < activeStage ? 'passed' : ''}`}
-                onClick={() => {
-                  setActiveStage(idx);
-                  setIsPlaying(false);
-                }}
+                onClick={() => setActiveStage(idx)}
                 role="tab"
                 aria-selected={idx === activeStage}
                 aria-label={`Stage ${s.num}: ${s.title}`}
@@ -157,6 +150,8 @@ const ArchiDraftWorkflow = () => {
           <motion.div
             key={activeStage}
             className="ad-stage-console"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
@@ -203,7 +198,7 @@ const ArchiDraftWorkflow = () => {
                 </div>
               </div>
 
-              {/* Stage Navigation & Playback Controls */}
+              {/* Stage Navigation & Automated Cadence Indicator (No Play Button) */}
               <div className="ad-stage-controls">
                 <button
                   className="ad-stage-nav-btn"
@@ -223,14 +218,14 @@ const ArchiDraftWorkflow = () => {
                   <ChevronRight size={16} />
                 </button>
 
-                <button
-                  className={`ad-stage-play-toggle ${isPlaying ? 'active' : ''}`}
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  aria-label={isPlaying ? 'Pause Auto-Advance' : 'Play Auto-Advance'}
+                <div
+                  className="ad-stage-auto-indicator"
+                  title="Automated 9-stage architectural drafting pipeline"
+                  aria-label="Auto-advance status"
                 >
-                  <Clock size={13} />
-                  <span>{isPlaying ? 'Auto-Playing' : 'Auto-Advance'}</span>
-                </button>
+                  <span className="ad-auto-pulse-dot" aria-hidden="true" />
+                  <span>{isPaused ? 'Paused on Hover' : 'Automated Flow'}</span>
+                </div>
               </div>
             </div>
 

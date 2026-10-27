@@ -30,8 +30,28 @@ const ArchiDraftNav = ({ onNavigate }) => {
 
   const scrollToSection = (id) => {
     setMenuOpen(false);
+    if (id === 'ad-download') {
+      if (onNavigate) {
+        onNavigate('archi-draft-download');
+      } else {
+        window.location.hash = 'download';
+      }
+      return;
+    }
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If currently on standalone download or legal page, transition back to archi-draft
+      if (onNavigate) {
+        onNavigate('archi-draft');
+      } else {
+        window.location.hash = 'archi-draft';
+      }
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    }
   };
 
   const goHome = () => {

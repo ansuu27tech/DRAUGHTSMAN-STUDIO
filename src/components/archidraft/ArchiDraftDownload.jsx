@@ -46,6 +46,17 @@ export default function ArchiDraftDownload({ isStandalone = false, onNavigate })
   const [formData, setFormData] = useState({ name: '', email: '', role: 'client', notes: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  // Close modal on Escape key
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && modalPlatform) {
+        setModalPlatform(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalPlatform]);
+
   const toggleGuidance = (id) => {
     setExpandedGuidance((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -57,6 +68,7 @@ export default function ArchiDraftDownload({ isStandalone = false, onNavigate })
       setTimeout(() => setCopiedHash(null), 2500);
     }
   };
+
 
   const handleWaitlistSubmit = (e) => {
     e.preventDefault();
@@ -138,58 +150,6 @@ export default function ArchiDraftDownload({ isStandalone = false, onNavigate })
           </p>
         </div>
 
-        {/* Central Visual Composition — Verified Device Showcase */}
-        <div className="ad-download-showcase-stage">
-          <div className="ad-stage-visual-left">
-            <div className="ad-stage-badge-strip">
-              <span className="ad-stage-tag">FLUTTER 3.13+ // ENGINE</span>
-              <span className="ad-stage-tag">DARWIN & LINUX & ANDROID</span>
-              <span className="ad-stage-tag">DWG / PDF / IFC COMPATIBLE</span>
-            </div>
-
-            <h2 className="ad-stage-heading">
-              Precision CAD Infrastructure.<br />
-              Field-Tested on Mobile & Workstation.
-            </h2>
-
-            <p className="ad-stage-description">
-              Archi Draft connects site engineers conducting surveys with lead draughtsmen on 4K studio monitors. Every revision round is synchronised with immutable audit logs and 50MB sheet streaming.
-            </p>
-
-            <div className="ad-stage-metrics">
-              <div className="ad-metric-item">
-                <small>Engine Target</small>
-                <strong>Android 8.0+</strong>
-              </div>
-              <div className="ad-metric-item">
-                <small>Drawing Pipeline</small>
-                <strong>Max 3 Cycles</strong>
-              </div>
-              <div className="ad-metric-item">
-                <small>Sheet Capacity</small>
-                <strong>50 MB / Sheet</strong>
-              </div>
-            </div>
-          </div>
-
-          <div className="ad-stage-visual-right">
-            <div className="ad-device-composition">
-              <div className="ad-mockup-frame">
-                <img
-                  src="/archidraft/mobile-app.jpg"
-                  alt="Archi Draft Mobile Client running technical drawing review on Android"
-                  className="ad-mockup-img"
-                  loading="lazy"
-                />
-                <div className="ad-mockup-telemetry-tag">
-                  <span>CLIENT SESSION // ACTIVE</span>
-                  <span style={{ color: 'var(--color-accent, #C5A059)' }}>● CAD STREAM SECURE</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Category Filters Bar */}
         <div className="ad-download-filters-bar" role="tablist" aria-label="Filter platforms">
           {[
@@ -252,7 +212,7 @@ export default function ArchiDraftDownload({ isStandalone = false, onNavigate })
                   </div>
                   <div className="ad-meta-row">
                     <span className="ad-meta-label">Identifier</span>
-                    <span className="ad-meta-value" style={{ fontSize: '0.68rem' }}>
+                    <span className="ad-meta-value ad-meta-value--identifier">
                       {platform.packageIdentifier}
                     </span>
                   </div>
@@ -341,7 +301,15 @@ export default function ArchiDraftDownload({ isStandalone = false, onNavigate })
                       className="ad-secondary-action-btn"
                       onClick={() => {
                         const el = document.getElementById('ad-interface');
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        if (el) {
+                          el.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          if (onNavigate) onNavigate('archi-draft');
+                          else window.location.hash = 'archi-draft';
+                          setTimeout(() => {
+                            document.getElementById('ad-interface')?.scrollIntoView({ behavior: 'smooth' });
+                          }, 150);
+                        }
                       }}
                       aria-label="Explore Web Workstation Interface"
                     >

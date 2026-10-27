@@ -12,24 +12,40 @@ const navItems = [
     { id: 'contact', icon: Mail, label: 'Contact' }
 ];
 
+function navigateToHash(hash) {
+    window.location.hash = hash;
+}
+
 const CommandBar = () => {
     const handleClick = (item) => {
         if (item.link) {
-            window.location.assign(item.link);
+            navigateToHash(item.link);
+            return;
+        }
+        if (item.id === 'hero') {
+            const element = document.getElementById('hero');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                navigateToHash('#home');
+            }
             return;
         }
         const element = document.getElementById(item.id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // If on another view (e.g. ArchiDraft or Verify), switch to home view with this section anchor
+            navigateToHash('#' + item.id);
         }
     };
 
     return (
         <motion.div
             className="command-bar-dock"
-            initial={{ y: 100, opacity: 0 }}
+            initial={{ y: 80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8, type: "spring" }}
+            transition={{ duration: 0.4, type: "spring", stiffness: 260, damping: 20 }}
             style={{
                 position: 'fixed',
                 bottom: '1.75rem',

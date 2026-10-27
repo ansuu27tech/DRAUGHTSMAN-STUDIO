@@ -199,6 +199,8 @@ export default function PixmintBot() {
   const [hasUnread, setHasUnread] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const windowRef = useRef(null);
+  const fabRef = useRef(null);
 
   // Auto-scroll to latest message and focus input when opened
   useEffect(() => {
@@ -223,6 +225,27 @@ export default function PixmintBot() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
+  // Click outside to dismiss assistant window smoothly
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleOutsideClick = (e) => {
+      if (
+        windowRef.current &&
+        !windowRef.current.contains(e.target) &&
+        fabRef.current &&
+        !fabRef.current.contains(e.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('touchstart', handleOutsideClick, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('touchstart', handleOutsideClick);
+    };
+  }, [isOpen]);
+
   // External trigger listener (e.g. from ArchiDraftShowcase "Interact with PIXMINT BOT")
   useEffect(() => {
     const handleExternalOpen = (e) => {
@@ -239,6 +262,7 @@ export default function PixmintBot() {
     };
     window.addEventListener('open-pixmint-bot', handleExternalOpen);
     return () => window.removeEventListener('open-pixmint-bot', handleExternalOpen);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSend = async (textToSend) => {
@@ -322,7 +346,6 @@ export default function PixmintBot() {
 
   const handleInternalLink = (hash) => {
     window.location.hash = hash;
-    window.dispatchEvent(new HashChangeEvent('hashchange'));
     // On small screens, close the bot drawer so user sees target view
     if (window.innerWidth < 768) {
       setIsOpen(false);
@@ -346,11 +369,13 @@ export default function PixmintBot() {
         {isOpen && (
           <motion.div
             id="pixmint-dialog"
+            ref={windowRef}
             className="pixmint-window"
-            initial={{ opacity: 0, y: 28, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 28, scale: 0.95 }}
-            transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
+            initial={{ opacity: 0, scale: 0.86, y: 18, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.86, y: 14, filter: 'blur(6px)' }}
+            transition={{ type: 'spring', stiffness: 350, damping: 26, mass: 0.75 }}
+            style={{ transformOrigin: 'bottom right' }}
             role="dialog"
             aria-modal="true"
             aria-labelledby="pixmint-title"
@@ -646,7 +671,7 @@ export default function PixmintBot() {
       </AnimatePresence>
 
       {/* Floating Action Trigger Button (Circular, Icon-Only) */}
-      <div className="pixmint-fab-wrapper">
+      <div className="pixmint-fab-wrapper" ref={fabRef}>
         <motion.button
           type="button"
           className={`pixmint-fab ${isOpen ? 'is-open' : ''} ${isLoading ? 'is-loading' : ''} ${hasUnread && !isOpen ? 'has-unread' : ''}`}
@@ -669,7 +694,7 @@ export default function PixmintBot() {
           {isLoading && <div className="pixmint-fab-orbit" aria-hidden="true" />}
 
           {/* Icon Presentation: Crossfade between Mascot and Close icon */}
-          <AnimatePresence mode="wait" initial={false}>
+          <AnimatePresence initial={false}>
             {isOpen ? (
               <motion.div
                 key="close-icon"
@@ -677,7 +702,7 @@ export default function PixmintBot() {
                 initial={{ rotate: -90, opacity: 0, scale: 0.8 }}
                 animate={{ rotate: 0, opacity: 1, scale: 1 }}
                 exit={{ rotate: 90, opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
               >
                 <X size={22} className="pixmint-fab-x" aria-hidden="true" />
               </motion.div>

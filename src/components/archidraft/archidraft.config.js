@@ -19,7 +19,6 @@ export const NAV_ITEMS = [
   { id: 'ad-versions', label: 'Revision Control' },
   { id: 'ad-features', label: 'Capabilities' },
   { id: 'ad-mobile', label: 'Mobile App' },
-  { id: 'ad-download', label: 'Download' },
   { id: 'ad-faq', label: 'FAQ' },
 ];
 

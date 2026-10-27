@@ -5,8 +5,8 @@ const SEO = ({
     title,
     description,
     keywords,
-    image = 'https://draughtsmanstudio.com/draughtsmanstudio.jpg',
-    url = 'https://draughtsmanstudio.com/'
+    image = 'https://www.draughtsmanstudio.com/draughtsmanstudio.jpg',
+    url = 'https://www.draughtsmanstudio.com/'
 }) => {
     const siteName = 'Draughtsman Studio';
     const fullTitle = title ? `${title} | ${siteName}` : `${siteName} | Architectural & Interior Design`;
@@ -17,9 +17,9 @@ const SEO = ({
         "@context": "http://schema.org",
         "@type": "LocalBusiness",
         "name": "Draughtsman Studio",
-        "image": "https://draughtsmanstudio.com/draughtsmanstudio.jpg",
+        "image": "https://www.draughtsmanstudio.com/draughtsmanstudio.jpg",
         "description": description || defaultDescription,
-        "url": "https://draughtsmanstudio.com/",
+        "url": "https://www.draughtsmanstudio.com/",
         "telephone": "+919176561515",
         "email": "contact@draughtsmanstudio.com",
         "address": {
@@ -30,6 +30,9 @@ const SEO = ({
 
     return (
         <Helmet>
+            {/* Canonical Link */}
+            <link rel="canonical" href={url} />
+
             {/* Standard Meta Tags */}
             <title>{fullTitle}</title>
             <meta name="description" content={description || defaultDescription} />

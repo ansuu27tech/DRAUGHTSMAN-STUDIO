@@ -13,8 +13,12 @@ export const ThemeProvider = ({ children }) => {
         const root = document.documentElement;
         if (theme === 'light') {
             root.setAttribute('data-theme', 'light');
+            root.classList.add('light');
+            document.body.classList.add('light');
         } else {
             root.removeAttribute('data-theme'); // Default/Fallback to dark variables
+            root.classList.remove('light');
+            document.body.classList.remove('light');
         }
         localStorage.setItem('theme', theme);
     }, [theme]);
@@ -30,4 +34,6 @@ export const ThemeProvider = ({ children }) => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => useContext(ThemeContext);
+

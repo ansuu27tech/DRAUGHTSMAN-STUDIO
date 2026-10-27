@@ -41,6 +41,10 @@ const LEGAL_DOCS = [
   },
 ];
 
+function setDocHash(docId) {
+  window.location.hash = `#archi-draft-${docId}`;
+}
+
 export default function ArchiDraftLegal({ currentView, onNavigate }) {
   const resolveDocId = (view) => {
     if (view === 'archi-draft-privacy' || view === 'privacy') return 'privacy';
@@ -62,8 +66,7 @@ export default function ArchiDraftLegal({ currentView, onNavigate }) {
     if (onNavigate) {
       onNavigate(`archi-draft-${docId}`);
     } else {
-      window.history.pushState(null, '', `#archi-draft-${docId}`);
-      window.dispatchEvent(new Event('hashchange'));
+      setDocHash(docId);
     }
   };
 

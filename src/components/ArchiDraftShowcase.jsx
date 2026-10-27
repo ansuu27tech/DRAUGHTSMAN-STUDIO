@@ -44,9 +44,10 @@ const ArchiDraftShowcase = ({
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.85, 1], [0.65, 1, 1, 0.65]);
 
   const handleLinkClick = (targetHash) => () => {
-    // If already on the same hash, force hashchange trigger so view renders reliably
     if (window.location.hash === targetHash) {
-      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.location.hash = targetHash;
     }
   };
 

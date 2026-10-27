@@ -12,7 +12,7 @@ const ThemeToggle = () => {
             whileTap={{ scale: 0.9 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            transition={{ duration: 0.3 }}
             style={{
                 position: 'fixed',
                 top: '2rem',

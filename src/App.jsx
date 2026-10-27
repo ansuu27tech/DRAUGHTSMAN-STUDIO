@@ -28,47 +28,150 @@ import PixmintBot from './components/pixmint/PixmintBot';
  * Resolve the current hash into a view name.
  * Defaults to 'home' when there is no hash or an unrecognized hash.
  */
-function getViewFromHash() {
-  const rawHash = window.location.hash.replace('#', '').toLowerCase();
-  const hash = rawHash.split('?')[0]; // strip query params
-  if (!hash || hash === 'home') return 'home';
-  if (hash === 'verify' || hash === 'certificate' || hash === 'certificate-verification') return 'verify';
-  if (hash === 'download' || hash === 'downloads' || hash === 'get-archidraft') return 'archi-draft-download';
-  if (hash === 'privacy') return 'archi-draft-privacy';
-  if (hash === 'terms' || hash === 'legal') return 'archi-draft-terms';
-  if (hash === 'deletion') return 'archi-draft-deletion';
-  if (hash === 'verification-policy') return 'archi-draft-verification-policy';
-  if (hash === 'ai-disclaimer') return 'archi-draft-ai-disclaimer';
-  // All archi-draft views start with 'archi-draft'
-  if (hash.startsWith('archi-draft')) return hash;
+/**
+ * Resolve the current view from either hash or pathname.
+ * Supports both traditional hash navigation (#verify, #download, #archi-draft)
+ * and direct path navigation (/verify, /download, /archidraft, /legal, /contact).
+ */
+function resolveCurrentView() {
+  // 1. Check hash first for backward compatibility
+  const rawHash = (window.location.hash || '').replace('#', '').trim();
+  const [hashPart, hashQuery] = rawHash.split('?');
+  const hash = hashPart ? hashPart.toLowerCase() : '';
+
+  // 2. Check pathname if no hash is present or if hash is just 'home'
+  const rawPath = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').trim().toLowerCase();
+  const searchParams = new URLSearchParams(window.location.search);
+  const hashParams = hashQuery ? new URLSearchParams(hashQuery) : null;
+
+  const docParam = (hashParams?.get('doc') || searchParams.get('doc') || '').toLowerCase();
+  if (docParam) {
+    if (docParam === 'privacy') return 'archi-draft-privacy';
+    if (docParam === 'terms' || docParam === 'legal') return 'archi-draft-terms';
+    if (docParam === 'deletion') return 'archi-draft-deletion';
+    if (docParam === 'verification-policy' || docParam === 'verification') return 'archi-draft-verification-policy';
+    if (docParam === 'ai-disclaimer' || docParam === 'ai') return 'archi-draft-ai-disclaimer';
+    if (docParam === 'ip-policy' || docParam === 'ip' || docParam === 'copyright') return 'archi-draft-ip-policy';
+  }
+
+  // Determine active identifier (hash takes precedence if non-empty and not 'home', else pathname)
+  const activeToken = hash && hash !== 'home' ? hash : rawPath;
+
+  if (!activeToken || activeToken === 'home') return 'home';
+  if (activeToken === 'verify' || activeToken === 'certificate' || activeToken === 'certificate-verification') return 'verify';
+  if (activeToken === 'download' || activeToken === 'downloads' || activeToken === 'get-archidraft') return 'archi-draft-download';
+  if (activeToken === 'privacy') return 'archi-draft-privacy';
+  if (activeToken === 'terms' || activeToken === 'legal') return 'archi-draft-terms';
+  if (activeToken === 'deletion') return 'archi-draft-deletion';
+  if (activeToken === 'verification-policy') return 'archi-draft-verification-policy';
+  if (activeToken === 'ai-disclaimer') return 'archi-draft-ai-disclaimer';
+  if (activeToken === 'ip-policy' || activeToken === 'copyright' || activeToken === 'archi-draft-ip-policy') return 'archi-draft-ip-policy';
+  if (activeToken === 'archi-draft' || activeToken === 'archidraft') return 'archi-draft';
+  if (activeToken.startsWith('archi-draft')) return activeToken;
+
   return 'home';
+}
+
+function markIntroViewed() {
+  try {
+    sessionStorage.setItem('ds_intro_viewed', 'true');
+  } catch (err) {
+    void err;
+  }
+}
+
+function hasViewedIntro() {
+  try {
+    return sessionStorage.getItem('ds_intro_viewed') === 'true';
+  } catch (err) {
+    void err;
+    return false;
+  }
 }
 
 function App() {
   const [showIntro, setShowIntro] = useState(() => {
-    // Only show intro for the home view on initial load
-    return getViewFromHash() === 'home';
+    // Only show intro on initial cold visit if user is at root or #home AND hasn't seen it yet this session
+    if (hasViewedIntro()) {
+      return false;
+    }
+    const rawHash = window.location.hash.replace('#', '').trim().toLowerCase();
+    const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').trim().toLowerCase();
+    const isColdHome = (!rawHash || rawHash === 'home') && (!rawPath || rawPath === 'home');
+    if (!isColdHome) {
+      markIntroViewed();
+    }
+    return isColdHome;
   });
-  const [currentView, setCurrentView] = useState(getViewFromHash);
+  const [currentView, setCurrentView] = useState(resolveCurrentView);
 
-  // Listen for hash changes (browser back/forward)
+  const dismissIntro = () => {
+    markIntroViewed();
+    setShowIntro(false);
+  };
+
+  // Listen for hash and pathname popstate changes (browser back/forward or internal link clicks)
   useEffect(() => {
-    const onHashChange = () => {
-      const view = getViewFromHash();
+    const handleRouteChange = () => {
+      const view = resolveCurrentView();
       setCurrentView(view);
-      window.scrollTo(0, 0);
+
+      const rawHash = window.location.hash.replace('#', '').trim();
+      const hashOnly = rawHash.split('?')[0].toLowerCase();
+      const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').trim().toLowerCase();
+      const activeToken = (hashOnly && hashOnly !== 'home') ? hashOnly : rawPath;
+
+      if (view === 'home') {
+        // Navigating back to home: never show intro again
+        setShowIntro(false);
+        markIntroViewed();
+
+        const targetId = (!activeToken || activeToken === 'home') ? 'hero' : activeToken;
+        // Instant top reset so user doesn't land halfway down the home page
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+        if (targetId && targetId !== 'hero' && targetId !== 'home') {
+          setTimeout(() => {
+            const el = document.getElementById(targetId);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 80);
+        }
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }
     };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+
+    window.addEventListener('hashchange', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('hashchange', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
+    };
   }, []);
 
-  // Intro timer — only applies to home view
+  // Intro timer — only applies to initial cold home load
   useEffect(() => {
     if (!showIntro) return;
     const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 3800);
+      dismissIntro();
+    }, 3200);
     return () => clearTimeout(timer);
+  }, [showIntro]);
+
+  // When intro ends, if an anchor or section path was in the URL, scroll to it
+  useEffect(() => {
+    if (!showIntro) {
+      const rawHash = window.location.hash.replace('#', '').trim().split('?')[0].toLowerCase();
+      const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').trim().toLowerCase();
+      const target = (rawHash && rawHash !== 'home') ? rawHash : rawPath;
+      if (target && target !== 'home' && target !== 'hero') {
+        setTimeout(() => {
+          document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      }
+    }
   }, [showIntro]);
 
   // Navigate helper passed to Archi Draft & components
@@ -79,139 +182,98 @@ function App() {
   const isHome = currentView === 'home';
   const isArchiDraft = currentView.startsWith('archi-draft');
   const isVerify = currentView === 'verify';
-  const isLegal = currentView === 'legal';
 
   return (
     <div className="app-container">
-      <AnimatePresence mode="wait">
-        {/* Home view — existing website + ArchiDraftShowcase */}
-        {isHome && (
-          <motion.div 
-            key="home-view"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.8, ease: 'easeInOut' } }}
-          >
-            <SEO />
-            <AnimatePresence mode="wait">
-              {showIntro ? (
-                <Intro key="intro" />
-              ) : (
-                <>
-                  <ThemeToggle />
-                  <ArchitecturalLayout />
-                  <Scene3D />
-                  <CommandBar />
-                  <main key="main-content" style={{ opacity: 0, animation: 'fadeIn 1s forwards' }}>
-                    <Hero />
-                    <Projects />
-                    <Founder />
-                    <Team />
-                    <AboutStudio />
-                    <Services />
-                    <ArchiDraftShowcase />
-                    <Testimonials />
-                    <Contact />
-                    <Footer />
-                  </main>
-                </>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
+      {/* Home view — existing website + ArchiDraftShowcase */}
+      {isHome && (
+        <motion.div 
+          key="home-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+        >
+          <SEO />
+          {showIntro && (
+            <Intro key="intro" onDismiss={dismissIntro} />
+          )}
+          <ThemeToggle />
+          <ArchitecturalLayout />
+          <Scene3D />
+          <CommandBar />
+          <main id="main-content">
+            <Hero />
+            <Projects />
+            <Founder />
+            <Team />
+            <AboutStudio />
+            <Services />
+            <ArchiDraftShowcase />
+            <Testimonials />
+            <Contact />
+            <Footer />
+          </main>
+        </motion.div>
+      )}
 
-        {/* Certificate Verification view — lazy loaded */}
-        {isVerify && (
-          <motion.div
-            key="verify-view"
-            initial={{ opacity: 0, scale: 1.01 }}
-            animate={{ opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeInOut' } }}
-            exit={{ opacity: 0, transition: { duration: 0.4 } }}
-          >
-            <Suspense fallback={
-              <div style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--color-text-secondary)',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.85rem',
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-              }}>
-                Loading Registry…
-              </div>
-            }>
-              <CertificateVerification onNavigate={navigate} />
-            </Suspense>
-          </motion.div>
-        )}
+      {/* Certificate Verification view — lazy loaded */}
+      {isVerify && (
+        <motion.div
+          key="verify-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+        >
+          <Suspense fallback={
+            <div style={{
+              minHeight: '100vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--color-text-secondary)',
+              fontFamily: 'var(--font-body)',
+              fontSize: '0.85rem',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+            }}>
+              Loading Registry…
+            </div>
+          }>
+            <CertificateVerification onNavigate={navigate} />
+          </Suspense>
+        </motion.div>
+      )}
 
-        {/* Legal Center direct view */}
-        {isLegal && (
-          <motion.div
-            key="legal-view"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 0.5 } }}
-            exit={{ opacity: 0, transition: { duration: 0.4 } }}
-          >
-            <Suspense fallback={
-              <div style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--color-text-secondary)',
-                fontSize: '0.85rem',
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-              }}>
-                Loading Policies…
-              </div>
-            }>
-              <ArchiDraft currentView="archi-draft-terms" onNavigate={navigate} />
-            </Suspense>
-          </motion.div>
-        )}
-
-        {/* Archi Draft product view — lazy loaded */}
-        {isArchiDraft && (
-          <motion.div
-            key="archidraft-view"
-            initial={{ opacity: 0, scale: 1.02 }}
-            animate={{ opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeInOut', delay: 0.2 } }}
-            exit={{ opacity: 0, transition: { duration: 0.5 } }}
-          >
-            <Suspense fallback={
-              <div style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--color-text-secondary)',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.85rem',
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-              }}>
-                Loading Archi Draft…
-              </div>
-            }>
-              <ArchiDraft currentView={currentView} onNavigate={navigate} />
-            </Suspense>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Archi Draft product, legal, & download views — lazy loaded */}
+      {isArchiDraft && (
+        <motion.div
+          key="archidraft-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+        >
+          <Suspense fallback={
+            <div style={{
+              minHeight: '100vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--color-text-secondary)',
+              fontFamily: 'var(--font-body)',
+              fontSize: '0.85rem',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+            }}>
+              Loading Archi Draft…
+            </div>
+          }>
+            <ArchiDraft currentView={currentView} onNavigate={navigate} />
+          </Suspense>
+        </motion.div>
+      )}
 
       {/* Global PIXMINT AI BOT Assistant Available Across All Views */}
       <PixmintBot />
-
-      <style>{`
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }

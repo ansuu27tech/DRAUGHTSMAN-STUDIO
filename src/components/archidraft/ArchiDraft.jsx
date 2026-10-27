@@ -68,7 +68,6 @@ const ArchiDraft = ({ currentView, onNavigate }) => {
             <ArchiDraftFeatures />
             <ArchiDraftArchVisual />
             <ArchiDraftMobile />
-            <ArchiDraftDownload isStandalone={false} onNavigate={onNavigate} />
             <ArchiDraftStudio />
             <ArchiDraftFAQ />
             <ArchiDraftCTA />

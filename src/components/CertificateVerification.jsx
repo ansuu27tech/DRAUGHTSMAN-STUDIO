@@ -150,6 +150,19 @@ export default function CertificateVerification({ onNavigate }) {
       } else if (response.status === 404) {
         setStatus('not_found');
         setErrorMessage(`No matching certificate found in the authoritative Draughtsman Studio registry for "${rawToken}".`);
+      } else if (response.status === 401 || response.status === 403) {
+        setStatus('error');
+        setErrorMessage(
+          'The authoritative certificate registry returned an authentication error (HTTP 401/403). The registry gateway is currently enforcing access control and undergoing authentication maintenance. This does not indicate that your certificate is invalid. Please try again later or contact support.'
+        );
+      } else if (response.status === 429) {
+        setStatus('error');
+        setErrorMessage('Verification request limit exceeded. Please wait a few moments before trying again.');
+      } else if (response.status >= 500) {
+        setStatus('error');
+        setErrorMessage(
+          `The authoritative certificate registry encountered an unexpected service error (HTTP ${response.status}). Service is temporarily disrupted. Please retry in a few minutes.`
+        );
       } else {
         setStatus('error');
         setErrorMessage(`Authoritative verification service returned HTTP ${response.status}. The registry may be undergoing maintenance.`);
@@ -161,19 +174,22 @@ export default function CertificateVerification({ onNavigate }) {
       setStatus('error');
       setErrorMessage(
         isTimeout
-          ? 'Authoritative registry connection timed out. Live registry backend is currently unresponsive.'
-          : 'Unable to reach the authoritative verification registry. Please check your network connection.'
+          ? 'Authoritative registry connection timed out after 6 seconds. The verification service is currently unresponsive. Please try again later.'
+          : 'Unable to establish a connection with the authoritative verification registry. Please check your network connection.'
       );
     }
   };
 
-  // Check URL hash/query on mount for direct verify links (e.g., #verify?token=XYZ)
+  // Check URL hash/query on mount for direct verify links (e.g., #verify?token=XYZ or /verify?token=XYZ)
   useEffect(() => {
-    const hash = window.location.hash;
-    const match = hash.match(/token=([a-zA-Z0-9_-]+)/i);
-    if (match && match[1]) {
-      setTokenInput(match[1]);
-      handleVerifyToken(match[1]);
+    const hash = window.location.hash || '';
+    const search = window.location.search || '';
+    const tokenFromQuery = new URLSearchParams(search).get('token');
+    const hashMatch = hash.match(/token=([a-zA-Z0-9_-]+)/i);
+    const resolvedToken = tokenFromQuery || (hashMatch ? hashMatch[1] : null);
+    if (resolvedToken) {
+      setTokenInput(resolvedToken);
+      handleVerifyToken(resolvedToken);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

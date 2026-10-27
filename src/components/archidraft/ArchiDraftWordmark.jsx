@@ -30,7 +30,6 @@ const ArchiDraftWordmark = ({
 
   // Palette tokens
   const textColor = isVellum ? '#0d0f12' : '#f5f2eb';
-  const textSecondaryColor = isVellum ? '#4a515e' : '#9da3ad';
   const goldPrimary = '#c8a96e';
   const goldLight = '#dfc58d';
   const goldDark = '#9e7b35';
