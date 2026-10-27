@@ -11,10 +11,6 @@
     {
       "pattern": "www.draughtsmanstudio.com",
       "custom_domain": true
-    },
-    {
-      "pattern": "draughtsmanstudio.com",
-      "custom_domain": true
     }
   ]
 }
