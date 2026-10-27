@@ -38,10 +38,17 @@ const ArchiDraftFooter = ({ onNavigate }) => {
 
     if (onNavigate) {
       onNavigate(targetHash);
+    } else if (targetHash === 'home' || targetHash === 'hero') {
+      if (window.location.pathname !== '/' && window.location.pathname !== '') {
+        window.history.pushState(null, '', '/');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      } else {
+        window.location.hash = '';
+      }
     } else {
       window.location.assign('#' + targetHash);
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   return (
@@ -177,9 +184,10 @@ const ArchiDraftFooter = ({ onNavigate }) => {
             &copy; {currentYear} Draughtsman Studio. All rights reserved. Registered architectural practice & software systems.
           </div>
           <a
-            href="#home"
+            href="/"
             className="ad-footer-studio-link"
             onClick={(e) => handleNavigate(e, 'home')}
+            aria-label="Return to Draughtsman Studio Homepage"
           >
             <span>RETURN TO DRAUGHTSMAN STUDIO</span>
             <ArrowRight size={12} />

@@ -39,7 +39,7 @@ function resolveCurrentView() {
   const [hashPart, hashQuery] = rawHash.split('?');
   const hash = hashPart ? hashPart.toLowerCase() : '';
 
-  // 2. Check pathname if no hash is present or if hash is just 'home'
+  // 2. Check pathname
   const rawPath = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').trim().toLowerCase();
   const searchParams = new URLSearchParams(window.location.search);
   const hashParams = hashQuery ? new URLSearchParams(hashQuery) : null;
@@ -54,8 +54,21 @@ function resolveCurrentView() {
     if (docParam === 'ip-policy' || docParam === 'ip' || docParam === 'copyright') return 'archi-draft-ip-policy';
   }
 
+  // Explicit home request via hash (e.g. #home or #hero)
+  if (hash === 'home' || hash === 'hero') {
+    // If browser is on a secondary pathname (e.g. /verify#home), normalize address bar to /
+    if (typeof window !== 'undefined' && window.location.pathname !== '/' && window.location.pathname !== '') {
+      try {
+        window.history.replaceState(null, '', '/');
+      } catch (err) {
+        void err;
+      }
+    }
+    return 'home';
+  }
+
   // Determine active identifier (hash takes precedence if non-empty and not 'home', else pathname)
-  const activeToken = hash && hash !== 'home' ? hash : rawPath;
+  const activeToken = hash ? hash : rawPath;
 
   if (!activeToken || activeToken === 'home') return 'home';
   if (activeToken === 'verify' || activeToken === 'certificate' || activeToken === 'certificate-verification') return 'verify';
@@ -126,7 +139,7 @@ function App() {
         setShowIntro(false);
         markIntroViewed();
 
-        const targetId = (!activeToken || activeToken === 'home') ? 'hero' : activeToken;
+        const targetId = (!hashOnly || hashOnly === 'home' || hashOnly === 'hero') ? 'hero' : hashOnly;
         // Instant top reset so user doesn't land halfway down the home page
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
@@ -174,9 +187,79 @@ function App() {
     }
   }, [showIntro]);
 
-  // Navigate helper passed to Archi Draft & components
+  // Navigate helper passed to Archi Draft, Certificate Verification & sub-components
   const navigate = (view) => {
-    window.location.hash = view;
+    const target = (view || '').replace(/^#/, '').trim().toLowerCase();
+
+    if (!target || target === 'home' || target === 'hero') {
+      setShowIntro(false);
+      markIntroViewed();
+
+      if (window.location.pathname !== '/' && window.location.pathname !== '') {
+        window.history.pushState(null, '', '/');
+      } else if (window.location.hash) {
+        window.history.pushState(null, '', '/');
+      }
+
+      setCurrentView('home');
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      return;
+    }
+
+    if (target === 'verify' || target === 'certificate') {
+      if (window.location.pathname !== '/verify') {
+        window.history.pushState(null, '', '/verify');
+      }
+      setCurrentView('verify');
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      return;
+    }
+
+    if (target === 'download' || target === 'downloads' || target === 'archi-draft-download') {
+      if (window.location.pathname !== '/download') {
+        window.history.pushState(null, '', '/download');
+      }
+      setCurrentView('archi-draft-download');
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      return;
+    }
+
+    if (target === 'archi-draft' || target === 'archidraft') {
+      if (window.location.pathname !== '/archidraft') {
+        window.history.pushState(null, '', '/archidraft');
+      }
+      setCurrentView('archi-draft');
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      return;
+    }
+
+    if (target === 'legal' || target === 'terms' || target === 'archi-draft-terms') {
+      if (window.location.pathname !== '/legal') {
+        window.history.pushState(null, '', '/legal');
+      }
+      setCurrentView('archi-draft-terms');
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      return;
+    }
+
+    if (target.startsWith('archi-draft-') || target === 'privacy' || target === 'deletion') {
+      window.location.hash = target;
+      setCurrentView(resolveCurrentView());
+      return;
+    }
+
+    // Anchor on homepage (e.g. #about, #projects, #contact)
+    if (window.location.pathname !== '/' && window.location.pathname !== '') {
+      window.history.pushState(null, '', '/#' + target);
+      setCurrentView('home');
+      setShowIntro(false);
+      markIntroViewed();
+      setTimeout(() => {
+        document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      window.location.hash = target;
+    }
   };
 
   const isHome = currentView === 'home';

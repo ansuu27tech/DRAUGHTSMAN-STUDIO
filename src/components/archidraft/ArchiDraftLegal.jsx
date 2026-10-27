@@ -91,7 +91,16 @@ export default function ArchiDraftLegal({ currentView, onNavigate }) {
         }}>
           <button
             type="button"
-            onClick={() => onNavigate ? onNavigate('home') : (window.location.hash = '#home')}
+            onClick={() => {
+              if (onNavigate) {
+                onNavigate('home');
+              } else if (window.location.pathname !== '/' && window.location.pathname !== '') {
+                window.history.pushState(null, '', '/');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+              } else {
+                window.location.hash = '';
+              }
+            }}
             style={{
               background: 'transparent',
               border: 'none',
@@ -105,6 +114,7 @@ export default function ArchiDraftLegal({ currentView, onNavigate }) {
               letterSpacing: '2px',
               textTransform: 'uppercase',
             }}
+            aria-label="Return to Draughtsman Studio Homepage"
           >
             <ArrowLeft size={16} />
             <span>RETURN TO STUDIO</span>

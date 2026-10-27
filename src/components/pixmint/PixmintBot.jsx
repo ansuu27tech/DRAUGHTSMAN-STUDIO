@@ -345,7 +345,17 @@ export default function PixmintBot() {
   };
 
   const handleInternalLink = (hash) => {
-    window.location.hash = hash;
+    const cleanHash = (hash || '').replace(/^#/, '').trim().toLowerCase();
+    if (cleanHash === 'home' || cleanHash === 'hero' || !cleanHash) {
+      if (window.location.pathname !== '/' && window.location.pathname !== '') {
+        window.history.pushState(null, '', '/');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      } else {
+        window.location.hash = '';
+      }
+    } else {
+      window.location.hash = hash;
+    }
     // On small screens, close the bot drawer so user sees target view
     if (window.innerWidth < 768) {
       setIsOpen(false);

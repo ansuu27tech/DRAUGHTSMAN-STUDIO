@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { PLAY_STORE_URL } from './archidraft.config';
 import { Download, ShieldCheck, ArrowRight, Compass } from 'lucide-react';
 
-const ArchiDraftCTA = () => {
+const ArchiDraftCTA = ({ onNavigate }) => {
   return (
     <section className="ad-cta-final" aria-label="Call to Action">
       <div className="ad-cta-final-inner">
@@ -49,11 +49,22 @@ const ArchiDraftCTA = () => {
             </a>
 
             <a
-              href="#home"
+              href="/"
               className="ad-btn ad-btn--link"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) {
+                  onNavigate('home');
+                } else if (window.location.pathname !== '/' && window.location.pathname !== '') {
+                  window.history.pushState(null, '', '/');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                } else {
+                  window.location.hash = '';
+                }
+              }}
               aria-label="Return to Draughtsman Studio Home"
             >
-              <span>Return to Draughtsman Studio</span>
+              <span>RETURN TO STUDIO</span>
               <ArrowRight size={14} />
             </a>
           </div>

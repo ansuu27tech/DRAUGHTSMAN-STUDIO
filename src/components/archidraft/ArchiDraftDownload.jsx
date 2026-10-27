@@ -112,20 +112,43 @@ export default function ArchiDraftDownload({ isStandalone = false, onNavigate })
       <div className="ad-download-container">
         {/* Navigation Bar & Telemetry Status */}
         <div className="ad-download-nav-bar">
-          <button
-            className="ad-download-back-btn"
-            onClick={() => {
-              if (onNavigate) {
-                onNavigate(isStandalone ? 'archi-draft' : 'home');
-              } else {
-                window.location.hash = isStandalone ? 'archi-draft' : 'home';
-              }
-            }}
-            aria-label="Return to Overview"
-          >
-            <ArrowLeft size={14} />
-            <span>{isStandalone ? 'Product Overview (#archi-draft)' : 'Studio Home'}</span>
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              className="ad-download-back-btn"
+              onClick={() => {
+                if (onNavigate) {
+                  onNavigate('home');
+                } else if (window.location.pathname !== '/' && window.location.pathname !== '') {
+                  window.history.pushState(null, '', '/');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                } else {
+                  window.location.hash = '';
+                }
+              }}
+              aria-label="Return to Draughtsman Studio Homepage"
+            >
+              <ArrowLeft size={14} />
+              <span>RETURN TO STUDIO</span>
+            </button>
+            {isStandalone && (
+              <button
+                type="button"
+                className="ad-download-back-btn"
+                style={{ opacity: 0.85 }}
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate('archi-draft');
+                  } else {
+                    window.location.hash = 'archi-draft';
+                  }
+                }}
+                aria-label="Return to Archi Draft Product Overview"
+              >
+                <span>Product Overview</span>
+              </button>
+            )}
+          </div>
 
           <div className="ad-download-audit-badge">
             <span className="ad-live-dot" aria-hidden="true" />

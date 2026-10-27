@@ -70,7 +70,7 @@ const ArchiDraft = ({ currentView, onNavigate }) => {
             <ArchiDraftMobile />
             <ArchiDraftStudio />
             <ArchiDraftFAQ />
-            <ArchiDraftCTA />
+            <ArchiDraftCTA onNavigate={onNavigate} />
           </>
         )}
       </main>

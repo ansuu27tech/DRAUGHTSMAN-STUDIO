@@ -58,8 +58,11 @@ const ArchiDraftNav = ({ onNavigate }) => {
     setMenuOpen(false);
     if (onNavigate) {
       onNavigate('home');
+    } else if (window.location.pathname !== '/' && window.location.pathname !== '') {
+      window.history.pushState(null, '', '/');
+      window.dispatchEvent(new PopStateEvent('popstate'));
     } else {
-      window.location.hash = 'home';
+      window.location.hash = '';
     }
   };
 
@@ -86,9 +89,9 @@ const ArchiDraftNav = ({ onNavigate }) => {
 
         {/* Desktop Navigation Links */}
         <div className="ad-nav-desktop-menu">
-          <button className="ad-nav-back-btn" onClick={goHome}>
+          <button className="ad-nav-back-btn" onClick={goHome} aria-label="Return to Draughtsman Studio Homepage">
             <ArrowLeft size={13} />
-            <span>Studio</span>
+            <span>RETURN TO STUDIO</span>
           </button>
 
           <div className="ad-nav-links-divider" />
@@ -149,9 +152,9 @@ const ArchiDraftNav = ({ onNavigate }) => {
       {/* Mobile Drawer Menu */}
       {menuOpen && (
         <div className="ad-nav-mobile-drawer">
-          <button className="ad-nav-mobile-back" onClick={goHome}>
+          <button className="ad-nav-mobile-back" onClick={goHome} aria-label="Return to Draughtsman Studio Homepage">
             <ArrowLeft size={15} />
-            <span>Return to Draughtsman Studio</span>
+            <span>RETURN TO STUDIO</span>
           </button>
 
           <div className="ad-nav-mobile-links">

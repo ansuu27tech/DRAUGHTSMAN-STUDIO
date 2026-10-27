@@ -212,7 +212,17 @@ export default function CertificateVerification({ onNavigate }) {
           <button
             type="button"
             className="cert-back-btn"
-            onClick={() => onNavigate ? onNavigate('home') : (window.location.hash = '#home')}
+            onClick={() => {
+              if (onNavigate) {
+                onNavigate('home');
+              } else if (window.location.pathname !== '/' && window.location.pathname !== '') {
+                window.history.pushState(null, '', '/');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+              } else {
+                window.location.hash = '';
+              }
+            }}
+            aria-label="Return to Draughtsman Studio Homepage"
           >
             <ArrowLeft size={16} />
             <span>RETURN TO STUDIO</span>
