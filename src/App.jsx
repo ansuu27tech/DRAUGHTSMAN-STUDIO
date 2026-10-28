@@ -67,8 +67,16 @@ function resolveCurrentView() {
     return 'home';
   }
 
+  const isArchiDraftSubdomain = typeof window !== 'undefined' && window.location.hostname.toLowerCase().startsWith('archidraft.');
+
   // Determine active identifier (hash takes precedence if non-empty and not 'home', else pathname)
   const activeToken = hash ? hash : rawPath;
+
+  if (isArchiDraftSubdomain) {
+    if (!activeToken || activeToken === 'home' || activeToken === 'archidraft' || activeToken === 'archi-draft') {
+      return 'archi-draft';
+    }
+  }
 
   if (!activeToken || activeToken === 'home') return 'home';
   if (activeToken === 'verify' || activeToken === 'certificate' || activeToken === 'certificate-verification') return 'verify';
@@ -104,6 +112,10 @@ function hasViewedIntro() {
 
 function App() {
   const [showIntro, setShowIntro] = useState(() => {
+    // Never show intro on archidraft subdomain
+    if (typeof window !== 'undefined' && window.location.hostname.toLowerCase().startsWith('archidraft.')) {
+      return false;
+    }
     // Only show intro on initial cold visit if user is at root or #home AND hasn't seen it yet this session
     if (hasViewedIntro()) {
       return false;
@@ -190,8 +202,14 @@ function App() {
   // Navigate helper passed to Archi Draft, Certificate Verification & sub-components
   const navigate = (view) => {
     const target = (view || '').replace(/^#/, '').trim().toLowerCase();
+    const isArchiDraftSubdomain = typeof window !== 'undefined' && window.location.hostname.toLowerCase().startsWith('archidraft.');
 
-    if (!target || target === 'home' || target === 'hero') {
+    if (!target || target === 'home' || target === 'hero' || target === 'studio') {
+      if (isArchiDraftSubdomain) {
+        window.location.href = 'https://www.draughtsmanstudio.com/';
+        return;
+      }
+
       setShowIntro(false);
       markIntroViewed();
 

@@ -56,6 +56,11 @@ const ArchiDraftNav = ({ onNavigate }) => {
 
   const goHome = () => {
     setMenuOpen(false);
+    const isSubdomain = typeof window !== 'undefined' && window.location.hostname.toLowerCase().startsWith('archidraft.');
+    if (isSubdomain) {
+      window.location.href = 'https://www.draughtsmanstudio.com/';
+      return;
+    }
     if (onNavigate) {
       onNavigate('home');
     } else if (window.location.pathname !== '/' && window.location.pathname !== '') {

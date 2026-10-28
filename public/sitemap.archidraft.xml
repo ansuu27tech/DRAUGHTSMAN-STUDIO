@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Archi Draft Subdomain Root -->
+  <url>
+    <loc>https://archidraft.draughtsmanstudio.com/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- Multi-Platform Download Center -->
+  <url>
+    <loc>https://archidraft.draughtsmanstudio.com/download</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://archidraft.draughtsmanstudio.com/privacy</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://archidraft.draughtsmanstudio.com/terms</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <!-- Account & Data Deletion Protocol -->
+  <url>
+    <loc>https://archidraft.draughtsmanstudio.com/deletion</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+  <!-- Verification Policy -->
+  <url>
+    <loc>https://archidraft.draughtsmanstudio.com/verification-policy</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+</urlset>

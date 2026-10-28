@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:archidraft": "vite build --config vite.archidraft.config.js",
+    "preview:archidraft": "vite preview --config vite.archidraft.config.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },

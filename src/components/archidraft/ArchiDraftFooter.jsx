@@ -36,6 +36,12 @@ const ArchiDraftFooter = ({ onNavigate }) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey) return; // Allow open in new tab
     e.preventDefault();
 
+    const isSubdomain = typeof window !== 'undefined' && window.location.hostname.toLowerCase().startsWith('archidraft.');
+    if (isSubdomain && (targetHash === 'home' || targetHash === 'hero' || targetHash === 'studio')) {
+      window.location.href = 'https://www.draughtsmanstudio.com/';
+      return;
+    }
+
     if (onNavigate) {
       onNavigate(targetHash);
     } else if (targetHash === 'home' || targetHash === 'hero') {
